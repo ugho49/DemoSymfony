@@ -21,7 +21,7 @@ class UserController extends Controller
     /**
      * Lists all user entities.
      *
-     * @Route("/", name="user_index")
+     * @Route("/", name="admin_user_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -38,7 +38,7 @@ class UserController extends Controller
     /**
      * Creates a new user entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="admin_user_new")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return RedirectResponse|Response
@@ -63,7 +63,7 @@ class UserController extends Controller
                 ->getFlashBag()
                 ->add('success', 'The user has been successfully created');
 
-            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
         }
 
         return $this->render('admin/user/new.html.twig', array(
@@ -75,7 +75,7 @@ class UserController extends Controller
     /**
      * Finds and displays a user entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="admin_user_show")
      * @Method("GET")
      * @param User $user
      * @return Response
@@ -93,7 +93,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing user entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="admin_user_edit")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param User $user
@@ -111,7 +111,7 @@ class UserController extends Controller
                 ->getFlashBag()
                 ->add('info', 'The user has been successfully updated');
 
-            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
         }
 
         return $this->render('admin/user/edit.html.twig', array(
@@ -123,7 +123,7 @@ class UserController extends Controller
     /**
      * Deletes a user entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="admin_user_delete")
      * @Method("DELETE")
      * @param Request $request
      * @param User $user
@@ -144,7 +144,7 @@ class UserController extends Controller
                 ->add('info', 'The user has been successfully deleted');
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -157,7 +157,7 @@ class UserController extends Controller
     private function createDeleteForm(User $user)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('admin_user_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

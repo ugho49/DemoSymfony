@@ -1,3 +1,5 @@
+{% set route = app.request.attributes.get('_route') %}
+
 <nav class="navbar navbar-default">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -15,14 +17,14 @@
         <div class="collapse navbar-collapse" id="bs-navbar-collapse">
             {% if app.user %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ path("post_index") }}">Posts</a></li>
-                    <li><a href="{{ path("category_index") }}">Categories</a></li>
+                    <li class="{% if route starts with 'post' %}active{% endif %}"><a href="{{ path("post_index") }}">Posts</a></li>
+                    <li class="{% if route starts with 'category' %}active{% endif %}"><a href="{{ path("category_index") }}">Categories</a></li>
 
                     {% if is_granted("ROLE_ADMIN") %}
-                        <li class="dropdown">
+                        <li class="dropdown {% if route starts with 'admin' %}active{% endif %}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('user_index') }}">Users</a></li>
+                                <li><a href="{{ path('admin_user_index') }}">Users</a></li>
                             </ul>
                         </li>
                     {% endif %}
