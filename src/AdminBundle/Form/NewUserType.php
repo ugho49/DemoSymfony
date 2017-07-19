@@ -20,16 +20,38 @@ class NewUserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('email', EmailType::class)
+        $builder->add('firstname', TextType::class, array(
+                "attr" => array(
+                    "placeholder" => "firstname"
+                )
+            ))
+            ->add('lastname', TextType::class, array(
+                "attr" => array(
+                    "placeholder" => "lastname"
+                )
+            ))
+            ->add('email', EmailType::class, array(
+                "attr" => array(
+                    "placeholder" => "email"
+                )
+            ))
             ->add('password', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'options' => array('attr' => array('class' => 'password-field')),
                 'required' => true,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
+                'first_options'  => array(
+                    'label' => 'Password',
+                    'attr'  => array(
+                        "placeholder" => "password"
+                    )
+                ),
+                'second_options' => array(
+                    'label' => 'Repeat Password',
+                    'attr'  => array(
+                        "placeholder" => "repeat password"
+                    )
+                ),
             ))
             ->add('roles', ChoiceType::class, array(
                 'choices'  => RolesEnum::ALL_ROLES,
