@@ -52,11 +52,6 @@ class User implements UserInterface, AdvancedUserInterface
     private $password;
 
     /**
-     * @ORM\Column(name="password_salt", type="string", length=100, nullable=true)
-     */
-    private $salt;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $enabled = true;
@@ -350,19 +345,6 @@ class User implements UserInterface, AdvancedUserInterface
     }
 
     /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-
-        return $this;
-    }
-
-    /**
      * Set birthday
      *
      * @param \DateTime $birthday
@@ -394,7 +376,7 @@ class User implements UserInterface, AdvancedUserInterface
 
     public function getSalt()
     {
-        return $this->salt;
+        return null;
     }
 
     public function getPassword()

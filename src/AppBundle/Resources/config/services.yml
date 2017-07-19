@@ -1,0 +1,4 @@
+services:
+    security.authentication.success.handler:
+        class: AppBundle\EventListener\AuthenticationSuccessHandler
+        arguments: ["@security.http_utils", "@doctrine.orm.entity_manager"]
