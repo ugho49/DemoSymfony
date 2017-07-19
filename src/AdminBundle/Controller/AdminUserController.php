@@ -12,11 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * User controller.
+ * Admin User controller.
  *
  * @Route("user")
  */
-class UserController extends Controller
+class AdminUserController extends Controller
 {
     /**
      * Lists all user entities.

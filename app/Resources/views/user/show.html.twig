@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>My Profile</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Firstname</th>
+            <td>{{ user.firstname }}</td>
+        </tr>
+        <tr>
+            <th>Lastname</th>
+            <td>{{ user.lastname }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Birthday</th>
+            <td>{% if user.birthday %}{{ user.birthday|date('Y-m-d') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Createdat</th>
+            <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Updatedat</th>
+            <td>{% if user.updatedAt %}{{ user.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
