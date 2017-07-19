@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,8 +31,15 @@ class CategoryController extends Controller
 
         $categories = $em->getRepository('AppBundle:Category')->findAll();
 
+        $deleteForms = [];
+
+        foreach ($categories as $category) {
+            $deleteForms[$category->getId()] = $this->createDeleteForm($category)->createView();
+        }
+
         return $this->render('category/index.html.twig', array(
-            'categories' => $categories,
+            'categories'    =>  $categories,
+            'delete_forms'  =>  $deleteForms
         ));
     }
 
@@ -40,6 +48,7 @@ class CategoryController extends Controller
      *
      * @Route("/new", name="category_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
      * @return RedirectResponse|Response
      */
@@ -58,7 +67,7 @@ class CategoryController extends Controller
                 ->getFlashBag()
                 ->add('success', 'The category has been successfully created');
 
-            return $this->redirectToRoute('category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_index');
         }
 
         return $this->render('category/new.html.twig', array(
@@ -68,28 +77,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * Finds and displays a category entity.
-     *
-     * @Route("/{id}", name="category_show")
-     * @Method("GET")
-     * @param Category $category
-     * @return Response
-     */
-    public function showAction(Category $category)
-    {
-        $deleteForm = $this->createDeleteForm($category);
-
-        return $this->render('category/show.html.twig', array(
-            'category' => $category,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing category entity.
      *
      * @Route("/{id}/edit", name="category_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
      * @param Category $category
      * @return RedirectResponse|Response
@@ -106,7 +98,7 @@ class CategoryController extends Controller
                 ->getFlashBag()
                 ->add('info', 'The category has been successfully updated');
 
-            return $this->redirectToRoute('category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_index');
         }
 
         return $this->render('category/edit.html.twig', array(
@@ -120,6 +112,7 @@ class CategoryController extends Controller
      *
      * @Route("/{id}", name="category_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
      * @param Category $category
      * @return RedirectResponse

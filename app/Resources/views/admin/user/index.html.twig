@@ -3,10 +3,13 @@
 {% block body %}
     <h1>Users list</h1>
 
+    <div class="row text-right">
+        <a href="{{ path('admin_user_new') }}" class="btn">Create a new user</a>
+    </div>
+
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Email</th>
@@ -20,38 +23,26 @@
         <tbody>
         {% for user in users %}
             <tr>
-                <td><a href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.email }}</td>
                 <td>{% if user.birthday %}{{ user.birthday|date('Y-m-d') }}{% endif %}</td>
                 <td>{% if user.enabled %}Yes{% else %}No{% endif %}</td>
                 <td>
-                    <ul>
-                        {% for role in user.roles %}
-                            <li>{{ role }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% for role in user.roles %}
+                        <span class="label label-default">{{ role }}</span>
+                    {% endfor %}
                 </td>
                 <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i') }}{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_user_show', { 'id': user.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    {% if not user.hasRole("ROLE_SUPERADMIN") and user.id != app.user.id %}
+                        <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">edit</a>
+                    {% endif %}
+                    <a href="{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-default">show</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_new') }}">Create a new user</a>
-        </li>
-    </ul>
 {% endblock %}

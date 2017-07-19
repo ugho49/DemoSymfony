@@ -6,10 +6,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
                 <th>Firstname</th>
                 <td>{{ user.firstname }}</td>
             </tr>
@@ -28,11 +24,9 @@
             <tr>
                 <th>Roles</th>
                 <td>
-                    <ul>
-                        {% for role in user.roles %}
-                            <li>{{ role }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% for role in user.roles %}
+                        <span class="label label-default">{{ role }}</span>
+                    {% endfor %}
                 </td>
             </tr>
             <tr>
@@ -54,16 +48,22 @@
         </tbody>
     </table>
 
+    {% set canEdit = not user.hasRole("ROLE_SUPERADMIN") and user.id != app.user.id %}
+
     <div class="row">
         <div class="col-md-6 text-left">
             <a href="{{ path('admin_user_index') }}" class="btn btn-default">Back to the list</a>
 
-            <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">Edit</a>
+            {% if canEdit %}
+                <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">Edit</a>
+            {% endif %}
         </div>
         <div class="col-md-6 text-right">
+            {% if canEdit %}
             {{ form_start(delete_form) }}
             <input type="submit" value="Delete" class="btn btn-danger">
             {{ form_end(delete_form) }}
+            {% endif %}
         </div>
     </div>
 

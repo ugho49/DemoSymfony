@@ -2,11 +2,22 @@
 
 namespace AdminBundle\Form;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class EditUserType extends AbstractUserType
 {
+
+    /**
+     * EditUserType constructor.
+     * @param User $user
+     */
+    function __construct(User $user)
+    {
+        parent::__construct($user);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\EditUserType;
+use AdminBundle\Form\NewUserType;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -45,8 +47,10 @@ class AdminUserController extends Controller
      */
     public function newAction(Request $request)
     {
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
         $user = new User();
-        $form = $this->createForm('AdminBundle\Form\NewUserType', $user);
+        $form = $this->createForm(new NewUserType($currentUser), $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -101,7 +105,9 @@ class AdminUserController extends Controller
      */
     public function editAction(Request $request, User $user)
     {
-        $editForm = $this->createForm('AdminBundle\Form\EditUserType', $user);
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        $editForm = $this->createForm(new EditUserType($currentUser), $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

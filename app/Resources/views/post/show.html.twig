@@ -6,10 +6,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
                 <th>Name</th>
                 <td>{{ post.name }}</td>
             </tr>
@@ -36,16 +32,22 @@
         </tbody>
     </table>
 
+    {% set canEdit = app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
+
     <div class="row">
         <div class="col-md-6 text-left">
             <a href="{{ path('post_index') }}" class="btn btn-default">Back to the list</a>
 
-            <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-primary">Edit</a>
+            {% if canEdit %}
+                <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-primary">Edit</a>
+            {% endif %}
         </div>
         <div class="col-md-6 text-right">
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete" class="btn btn-danger">
-            {{ form_end(delete_form) }}
+            {% if canEdit %}
+                {{ form_start(delete_form) }}
+                <input type="submit" value="Delete" class="btn btn-danger">
+                {{ form_end(delete_form) }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

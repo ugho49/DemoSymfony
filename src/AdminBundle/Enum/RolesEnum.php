@@ -11,11 +11,13 @@ namespace AdminBundle\Enum;
 abstract class RolesEnum
 {
     const ROLE_USER = "ROLE_USER";
+    const ROLE_EDITOR = "ROLE_EDITOR";
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_SUPERADMIN = "ROLE_SUPERADMIN";
 
     const ALL_ROLES = [
         RolesEnum::ROLE_USER => RolesEnum::ROLE_USER,
+        RolesEnum::ROLE_EDITOR => RolesEnum::ROLE_EDITOR,
         RolesEnum::ROLE_ADMIN => RolesEnum::ROLE_ADMIN
     ];
 }

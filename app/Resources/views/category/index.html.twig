@@ -3,37 +3,42 @@
 {% block body %}
     <h1>Categories list</h1>
 
+    {% if is_granted('ROLE_ADMIN') %}
+    <div class="row text-right">
+        <a href="{{ path('category_new') }}" class="btn">Create a new category</a>
+    </div>
+    {% endif %}
+
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
-                <th>Actions</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
         {% for category in categories %}
             <tr>
-                <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
                 <td>{{ category.name }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('category_show', { 'id': category.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('category_edit', { 'id': category.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                <td class="text-right">
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <a href="{{ path('category_edit', { 'id': category.id }) }}" class="btn btn-primary">edit</a>
+                        </div>
+
+                        <div class="col-md-3 text-left">
+                            {{ form_start(delete_forms[category.id]) }}
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                            {{ form_end(delete_forms[category.id]) }}
+                        </div>
+                    </div>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('category_new') }}">Create a new category</a>
-        </li>
-    </ul>
 {% endblock %}

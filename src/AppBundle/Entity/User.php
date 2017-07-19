@@ -191,6 +191,17 @@ class User implements UserInterface, AdvancedUserInterface
     }
 
     /**
+     * Has role
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role)
+    {
+        return in_array($role, $this->getRoles(), true);
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -224,50 +235,6 @@ class User implements UserInterface, AdvancedUserInterface
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    /**
-     * Add a role
-     *
-     * @param string $role
-     * @return $this
-     */
-    public function addRole(string $role) {
-
-        if (!$this->hasRole($role)) {
-            $this->roles[] = $role;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove a role
-     *
-     * @param string $role
-     * @return $this
-     */
-    public function removeRole(string $role) {
-
-        if ($this->hasRole($role)) {
-            $index = array_search($role, $this->roles[]);
-            if($index !== false){
-                unset($this->roles[$index]);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Has role
-     *
-     * @param string $role
-     * @return bool
-     */
-    public function hasRole(string $role)
-    {
-        return array_key_exists($role, $this->roles);
     }
 
     /**
