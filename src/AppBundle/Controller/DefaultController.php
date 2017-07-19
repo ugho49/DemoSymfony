@@ -22,7 +22,7 @@ class DefaultController extends Controller
             ->setEmail("stephan.ugho@gmail.com")
             ->setFirstname("Ugho")
             ->setLastname("STEPHAN")
-            ->addRole("ROLE_ADMIN");
+            ->addRole(User::ROLE_ADMIN);
 
         $user->setPassword($passwordEncoder->encodePassword($user, "test"));
 

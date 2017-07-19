@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -10,10 +11,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity("email")
  * @ORM\HasLifecycleCallbacks
  */
 class User implements UserInterface, AdvancedUserInterface
 {
+
     /**
      * @var int
      *
@@ -39,6 +42,7 @@ class User implements UserInterface, AdvancedUserInterface
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -48,9 +52,14 @@ class User implements UserInterface, AdvancedUserInterface
     private $password;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="password_salt", type="string", length=100, nullable=true)
      */
-    private $isActive = true;
+    private $salt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled = true;
 
     /**
      * @ORM\Column(type="json_array")
@@ -66,6 +75,11 @@ class User implements UserInterface, AdvancedUserInterface
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
+     */
+    private $lastLogin;
 
     public function __construct()
     {
@@ -164,29 +178,6 @@ class User implements UserInterface, AdvancedUserInterface
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return User
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
      * Set roles
      *
      * @param array $roles
@@ -242,9 +233,41 @@ class User implements UserInterface, AdvancedUserInterface
      * @return $this
      */
     public function addRole(string $role) {
-        $this->roles[] = $role;
+
+        if (!$this->hasRole($role)) {
+            $this->roles[] = $role;
+        }
 
         return $this;
+    }
+
+    /**
+     * Remove a role
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function removeRole(string $role) {
+
+        if ($this->hasRole($role)) {
+            $index = array_search($role, $this->roles[]);
+            if($index !== false){
+                unset($this->roles[$index]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has role
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role)
+    {
+        return array_key_exists($role, $this->roles);
     }
 
     /**
@@ -275,6 +298,65 @@ class User implements UserInterface, AdvancedUserInterface
         return $this->firstname . " " .$this->lastname;
     }
 
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return User
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set lastLogin
+     *
+     * @param \DateTime $lastLogin
+     * @return User
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * Get lastLogin
+     *
+     * @return \DateTime 
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
     //Override methods :
 
     public function getUsername()
@@ -284,7 +366,7 @@ class User implements UserInterface, AdvancedUserInterface
 
     public function getSalt()
     {
-        return null;
+        return $this->salt;
     }
 
     public function getPassword()
@@ -294,7 +376,7 @@ class User implements UserInterface, AdvancedUserInterface
 
     public function getRoles()
     {
-        return $this->roles;
+        return count($this->roles) > 0 ? $this->roles : null;
     }
 
     public function eraseCredentials()
@@ -318,6 +400,6 @@ class User implements UserInterface, AdvancedUserInterface
 
     public function isEnabled()
     {
-        return $this->isActive;
+        return $this->enabled;
     }
 }

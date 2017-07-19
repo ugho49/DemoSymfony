@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -11,8 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface
+class User implements UserInterface, AdvancedUserInterface
 {
+
+    const ROLE_USER = "ROLE_USER";
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_SUPERADMIN = "ROLE_SUPERADMIN";
+
     /**
      * @var int
      *
@@ -47,14 +52,19 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="password_salt", type="string", length=100, nullable=true)
      */
-    private $isActive;
+    private $salt;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="boolean")
      */
-    private $roles;
+    private $enabled = true;
+
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $roles = [];
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -66,33 +76,14 @@ class User implements UserInterface
      */
     private $updatedAt;
 
+    private $rolesToArray;
+
+    /**
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
     public function __construct()
-    {
-        $this->isActive = true;
-        $this->roles = new ArrayCollection();
-    }
-
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    public function getSalt()
-    {
-        return null;
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    public function eraseCredentials()
     {
     }
 
@@ -189,29 +180,6 @@ class User implements UserInterface
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return User
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
      * Set roles
      *
      * @param array $roles
@@ -222,6 +190,96 @@ class User implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return User
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Add a role
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function addRole(string $role) {
+
+        if (!$this->hasRole($role)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a role
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function removeRole(string $role) {
+
+        if ($this->hasRole($role)) {
+            $index = array_search($role, $this->roles[]);
+            if($index !== false){
+                unset($this->roles[$index]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has role
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role)
+    {
+        return array_key_exists($role, $this->roles);
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**
@@ -236,5 +294,114 @@ class User implements UserInterface
         if ($this->getCreatedAt() == null) {
             $this->setCreatedAt(new \DateTime('now'));
         }
+    }
+
+    public function getFullname() {
+        return $this->firstname . " " .$this->lastname;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return User
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set lastLogin
+     *
+     * @param \DateTime $lastLogin
+     * @return User
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * Get lastLogin
+     *
+     * @return \DateTime 
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    //Override methods :
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
     }
 }
