@@ -67,6 +67,11 @@ class User implements UserInterface, AdvancedUserInterface
     private $roles = [];
 
     /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthday;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -355,6 +360,29 @@ class User implements UserInterface, AdvancedUserInterface
         $this->salt = $salt;
 
         return $this;
+    }
+
+    /**
+     * Set birthday
+     *
+     * @param \DateTime $birthday
+     * @return User
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    /**
+     * Get birthday
+     *
+     * @return \DateTime
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
     }
 
     //Override methods :
