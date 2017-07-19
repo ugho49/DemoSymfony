@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Enum\RolesEnum;
 use AdminBundle\Form\EditUserType;
 use AdminBundle\Form\NewUserType;
 use AppBundle\Entity\User;
@@ -47,6 +48,7 @@ class AdminUserController extends Controller
      */
     public function newAction(Request $request)
     {
+        /** @var User $currentUser */
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         $user = new User();
@@ -105,7 +107,13 @@ class AdminUserController extends Controller
      */
     public function editAction(Request $request, User $user)
     {
+        /** @var User $currentUser */
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        // Can't edit a superadmin or edit yourselft
+        if ($user->hasRole(RolesEnum::ROLE_SUPERADMIN) || $user->getId() == $currentUser->getId()) {
+            throw $this->createAccessDeniedException();
+        }
 
         $editForm = $this->createForm(new EditUserType($currentUser), $user);
         $editForm->handleRequest($request);
@@ -137,6 +145,14 @@ class AdminUserController extends Controller
      */
     public function deleteAction(Request $request, User $user)
     {
+        /** @var User $currentUser */
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        // Can't remove a superadmin or remove yourselft
+        if ($user->hasRole(RolesEnum::ROLE_SUPERADMIN) || $user->getId() == $currentUser->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
 

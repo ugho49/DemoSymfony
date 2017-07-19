@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Post;
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -100,6 +101,14 @@ class PostController extends Controller
      */
     public function editAction(Request $request, Post $post)
     {
+        /** @var User $currentUser */
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        // Can edit only my post if i'm not an ADMIN
+        if ($post->getUser()->getId() != $currentUser->getId() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $editForm = $this->createForm('AppBundle\Form\PostType', $post);
         $editForm->handleRequest($request);
 
@@ -130,6 +139,14 @@ class PostController extends Controller
      */
     public function deleteAction(Request $request, Post $post)
     {
+        /** @var User $currentUser */
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        // Can remove only my post if i'm not an ADMIN
+        if ($post->getUser()->getId() != $currentUser->getId() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createDeleteForm($post);
         $form->handleRequest($request);
 

@@ -196,7 +196,7 @@ class User implements UserInterface, AdvancedUserInterface
      * @param string $role
      * @return bool
      */
-    public function hasRole(string $role)
+    public function hasRole($role)
     {
         return in_array($role, $this->getRoles(), true);
     }
