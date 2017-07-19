@@ -58,6 +58,10 @@ class PostController extends Controller
             $em->persist($post);
             $em->flush();
 
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'The post has been successfully created');
+
             return $this->redirectToRoute('post_show', array('id' => $post->getId()));
         }
 
@@ -102,6 +106,10 @@ class PostController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $request->getSession()
+                ->getFlashBag()
+                ->add('info', 'The post has been successfully updated');
+
             return $this->redirectToRoute('post_show', array('id' => $post->getId()));
         }
 
@@ -129,6 +137,10 @@ class PostController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($post);
             $em->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('info', 'The post has been successfully deleted');
         }
 
         return $this->redirectToRoute('post_index');

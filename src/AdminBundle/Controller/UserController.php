@@ -6,7 +6,10 @@ use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User controller.
@@ -37,6 +40,8 @@ class UserController extends Controller
      *
      * @Route("/new", name="user_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
@@ -54,6 +59,10 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'The user has been successfully created');
+
             return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }
 
@@ -68,6 +77,8 @@ class UserController extends Controller
      *
      * @Route("/{id}", name="user_show")
      * @Method("GET")
+     * @param User $user
+     * @return Response
      */
     public function showAction(User $user)
     {
@@ -84,6 +95,9 @@ class UserController extends Controller
      *
      * @Route("/{id}/edit", name="user_edit")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, User $user)
     {
@@ -92,6 +106,10 @@ class UserController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('info', 'The user has been successfully updated');
 
             return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }
@@ -107,6 +125,9 @@ class UserController extends Controller
      *
      * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, User $user)
     {
@@ -117,6 +138,10 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('info', 'The user has been successfully deleted');
         }
 
         return $this->redirectToRoute('user_index');
@@ -127,7 +152,7 @@ class UserController extends Controller
      *
      * @param User $user The user entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm(User $user)
     {
