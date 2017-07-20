@@ -9,5 +9,11 @@
         $('.date-advanced').datetimepicker({
             format: 'YYYY-MM-DD'
         });
+
+        $('form').on('submit', function () {
+            var $btn = $(this).find("button, input[type=submit], a");
+            $btn.data('loading-text', '<i class="fa fa-refresh fa-spin"></i>');
+            $btn.button('loading');
+        })
     });
 })();

@@ -52,15 +52,36 @@
                 </a>
             {% endif %}
         </div>
-        <div class="col-md-6 text-right">
-            {% if canEdit %}
-                {{ form_start(delete_form) }}
-                <button class="btn btn-danger" type="submit">
+
+        {% if canEdit %}
+            <div class="col-md-6 text-right">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">
                     <i class="fa fa-trash fa-align-left"></i>
                     delete
                 </button>
-                {{ form_end(delete_form) }}
-            {% endif %}
-        </div>
+            </div>
+
+            <div class="modal fade" role="dialog" id="modalDelete">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Delete</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            {{ form_start(delete_form) }}
+                            <button class="btn btn-danger" type="submit">
+                                <i class="fa fa-trash fa-align-left"></i>
+                                delete
+                            </button>
+                            {{ form_end(delete_form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

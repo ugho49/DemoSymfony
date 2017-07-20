@@ -33,12 +33,32 @@
                         </a>
                     </td>
                     <td>
-                        {{ form_start(delete_forms[category.id]) }}
-                        <button class="btn btn-danger" type="submit">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete-{{ category.id }}">
                             <i class="fa fa-trash fa-align-left"></i>
                             delete
                         </button>
-                        {{ form_end(delete_forms[category.id]) }}
+
+                        <div class="modal fade" role="dialog" id="modalDelete-{{ category.id }}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Delete</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure ?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        {{ form_start(delete_forms[category.id]) }}
+                                        <button class="btn btn-danger" type="submit">
+                                            <i class="fa fa-trash fa-align-left"></i>
+                                            delete
+                                        </button>
+                                        {{ form_end(delete_forms[category.id]) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 {% endif %}
             </tr>
