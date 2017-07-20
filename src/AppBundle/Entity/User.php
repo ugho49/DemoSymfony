@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Traits\Timestampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +17,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, AdvancedUserInterface
 {
+
+    use Timestampable;
 
     /**
      * @var int
@@ -67,23 +70,9 @@ class User implements UserInterface, AdvancedUserInterface
     private $birthday;
 
     /**
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
-
-    /**
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
-
-    public function __construct()
-    {
-    }
 
     /**
      * Get id
@@ -199,66 +188,6 @@ class User implements UserInterface, AdvancedUserInterface
     public function hasRole($role)
     {
         return in_array($role, $this->getRoles(), true);
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return User
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return User
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updatedTimestamps()
-    {
-        $this->setUpdatedAt(new \DateTime('now'));
-
-        if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new \DateTime('now'));
-        }
     }
 
     public function getFullname() {

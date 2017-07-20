@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
+    use Timestampable;
+
     /**
      * @var int
      *
@@ -49,16 +52,6 @@ class Post
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
-
-    /**
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
 
     /**
      * Get id
@@ -170,63 +163,4 @@ class Post
         return $this->user;
     }
 
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Post
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return Post
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updatedTimestamps()
-    {
-        $this->setUpdatedAt(new \DateTime('now'));
-
-        if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new \DateTime('now'));
-        }
-    }
 }
