@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Posts list</h1>
-
-    <div class="row text-right">
-        <a href="{{ path('post_new') }}" class="btn">Create a new post</a>
+    <div class="row text-center">
+        <a href="{{ path('post_new') }}" class="btn btn-success">
+            Create a new post
+            <i class="fa fa-plus fa-align-right"></i>
+        </a>
     </div>
+
+    <hr>
 
     <div class="table-responsive">
         <table class="table table-striped">

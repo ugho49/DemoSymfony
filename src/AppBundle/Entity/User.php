@@ -208,16 +208,6 @@ class User implements UserInterface, AdvancedUserInterface
     }
 
     /**
-     * Get enabled
-     *
-     * @return boolean 
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
      * Set lastLogin
      *
      * @param \DateTime $lastLogin

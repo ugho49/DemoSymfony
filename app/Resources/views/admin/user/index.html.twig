@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Users list</h1>
 
-    <div class="row text-right">
-        <a href="{{ path('admin_user_new') }}" class="btn">Create a new user</a>
+    <div class="row text-center">
+        <a href="{{ path('admin_user_new') }}" class="btn btn-success">
+            Create a new user
+            <i class="fa fa-plus fa-align-right"></i>
+        </a>
     </div>
+
+    <hr>
 
     <table class="table table-striped">
         <thead>
@@ -22,12 +26,18 @@
         </thead>
         <tbody>
         {% for user in users %}
-            <tr>
+            <tr {% if not user.enabled %}class="danger"{% endif %}>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.email }}</td>
                 <td>{% if user.birthday %}{{ user.birthday|date('Y-m-d') }}{% endif %}</td>
-                <td>{% if user.enabled %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    {% if user.enabled %}
+                        <span class="label label-success">Yes</span>
+                    {% else %}
+                        <span class="label label-danger">No</span>
+                    {% endif %}
+                </td>
                 <td>
                     {% for role in user.roles %}
                         <span class="label label-default">{{ role }}</span>

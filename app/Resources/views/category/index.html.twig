@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Categories list</h1>
-
     {% if is_granted('ROLE_ADMIN') %}
-    <div class="row text-right">
-        <a href="{{ path('category_new') }}" class="btn">Create a new category</a>
-    </div>
+        <div class="row text-center">
+            <a href="{{ path('category_new') }}" class="btn btn-success">
+                Create a new category
+                <i class="fa fa-plus fa-align-right"></i>
+            </a>
+        </div>
+
+        <hr>
     {% endif %}
 
     <table class="table table-striped">
