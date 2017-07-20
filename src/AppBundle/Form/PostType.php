@@ -29,13 +29,14 @@ class PostType extends AbstractType
                     "placeholder" => "Content"
                 )
             ))
-            ->add('category', EntityType::class, array(
+            ->add('categories', EntityType::class, array(
                 "class" => Category::class,
-                "empty_value" => "Choose a category",
                 "required" => false,
+                "multiple" => true,
+                "expanded" => false,
                 "attr" => array(
                     "class" => "js-select-advanced"
-                )
+                ),
             ));
     }
     

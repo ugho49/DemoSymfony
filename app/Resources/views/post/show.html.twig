@@ -14,8 +14,12 @@
                 <td>{{ post.content }}</td>
             </tr>
             <tr>
-                <th>Category</th>
-                <td>{% if post.category %}{{ post.category.name }}{% endif %}</td>
+                <th>Categories</th>
+                <td>
+                    {% for category in post.categories %}
+                        <span class="label label-default">{{ category.name }}</span>
+                    {% endfor %}
+                </td>
             </tr>
             <tr>
                 <th>Createdby</th>

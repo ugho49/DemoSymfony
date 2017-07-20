@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Traits\Timestampable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,9 +44,9 @@ class Post
     /**
      * @var Category
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category")
      */
-    private $category;
+    private $categories;
 
     /**
      * @var User
@@ -52,6 +54,14 @@ class Post
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -110,29 +120,6 @@ class Post
     }
 
     /**
-     * Set category
-     *
-     * @param Category $category
-     * @return Post
-     */
-    public function setCategory(Category $category = null)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
@@ -163,4 +150,36 @@ class Post
         return $this->user;
     }
 
+    /**
+     * Add categories
+     *
+     * @param Category $categories
+     * @return Post
+     */
+    public function addCategory(Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param Category $categories
+     */
+    public function removeCategory(Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 }

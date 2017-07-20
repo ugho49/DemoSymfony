@@ -16,7 +16,7 @@
             <tr>
                 <th>Name</th>
                 <th>Content</th>
-                <th>Category</th>
+                <th>Categories</th>
                 <th>Created By</th>
                 <th colspan="2">Actions</th>
             </tr>
@@ -26,7 +26,11 @@
                 <tr>
                     <td>{{ post.name }}</td>
                     <td class="text-justify">{{ post.content|slice(0, 100) ~ '...' }}</td>
-                    <td>{% if post.category %}{{ post.category.name }}{% endif %}</td>
+                    <td>
+                        {% for category in post.categories %}
+                            <span class="label label-default">{{ category.name }}</span>
+                        {% endfor %}
+                    </td>
                     <td>{{ post.user.fullname }}</td>
                     <td>
                         {% if app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
