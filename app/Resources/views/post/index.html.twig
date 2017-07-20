@@ -15,7 +15,7 @@
                 <th>Content</th>
                 <th>Category</th>
                 <th>Created By</th>
-                <th>Actions</th>
+                <th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -27,9 +27,17 @@
                     <td>{{ post.user.fullname }}</td>
                     <td>
                         {% if app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-primary">edit</a>
+                            <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-primary">
+                                <i class="fa fa-pencil fa-align-left"></i>
+                                edit
+                            </a>
                         {% endif %}
-                        <a href="{{ path('post_show', { 'id': post.id }) }}" class="btn btn-default">show</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('post_show', { 'id': post.id }) }}" class="btn btn-default">
+                            <i class="fa fa-eye fa-align-left"></i>
+                            show
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

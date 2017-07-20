@@ -17,7 +17,7 @@
                 <th>Enabled</th>
                 <th>Roles</th>
                 <th>Createdat</th>
-                <th>Actions</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -36,9 +36,17 @@
                 <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i') }}{% endif %}</td>
                 <td>
                     {% if not user.hasRole("ROLE_SUPERADMIN") and user.id != app.user.id %}
-                        <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">edit</a>
+                        <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">
+                            <i class="fa fa-pencil fa-align-left"></i>
+                            edit
+                        </a>
                     {% endif %}
-                    <a href="{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-default">show</a>
+                </td>
+                <td>
+                    <a href="{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-default">
+                        <i class="fa fa-eye fa-align-left"></i>
+                        show
+                    </a>
                 </td>
             </tr>
         {% endfor %}

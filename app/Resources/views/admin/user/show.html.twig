@@ -52,16 +52,25 @@
 
     <div class="row">
         <div class="col-md-6 text-left">
-            <a href="{{ path('admin_user_index') }}" class="btn btn-default">Back to the list</a>
+            <a href="{{ path('admin_user_index') }}" class="btn btn-default">
+                <i class="fa fa-angle-left fa-align-left"></i>
+                Back to the list
+            </a>
 
             {% if canEdit %}
-                <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">
+                    <i class="fa fa-pencil fa-align-left"></i>
+                    Edit
+                </a>
             {% endif %}
         </div>
         <div class="col-md-6 text-right">
             {% if canEdit %}
                 {{ form_start(delete_form) }}
-                <input type="submit" value="Delete" class="btn btn-danger">
+                <button class="btn btn-danger" type="submit">
+                    <i class="fa fa-trash fa-align-left"></i>
+                    delete
+                </button>
                 {{ form_end(delete_form) }}
             {% endif %}
         </div>
