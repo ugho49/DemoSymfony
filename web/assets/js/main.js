@@ -1,3 +1,5 @@
 $(document).ready(function() {
-   console.log("ready");
+    $('.alert-dismissible').delay(3000).fadeOut(500, function () {
+        $(this).remove();
+    });
 });
