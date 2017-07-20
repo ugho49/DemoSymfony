@@ -12,4 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
+    public function findByCategory($category)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin("p.categories", "c")
+            ->where('c = :category')
+            ->setParameter('category', $category)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
 }
