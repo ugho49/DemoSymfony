@@ -15,21 +15,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        /*$passwordEncoder = $this->get('security.password_encoder');
-
-        $user = new User();
-        $user
-            ->setEmail("stephan.ugho@gmail.com")
-            ->setFirstname("Ugho")
-            ->setLastname("STEPHAN")
-            ->addRole(User::ROLE_ADMIN);
-
-        $user->setPassword($passwordEncoder->encodePassword($user, "test"));
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();*/
-
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig');
     }

@@ -54,10 +54,10 @@ class UserController extends Controller
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         $em   = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository("AppBundle:User");
+        $repo = $em->getRepository(User::class);
         $user = $repo->find($currentUser->getId());
 
-        $editForm = $this->createForm(new UserType(), $user);
+        $editForm = $this->createForm(UserType::class, $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
