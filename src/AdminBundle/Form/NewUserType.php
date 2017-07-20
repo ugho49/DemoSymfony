@@ -2,23 +2,12 @@
 
 namespace AdminBundle\Form;
 
-use AppBundle\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class NewUserType extends AbstractUserType
 {
-
-    /**
-     * NewUserType constructor.
-     * @param User $user
-     */
-    function __construct(User $user)
-    {
-        parent::__construct($user);
-    }
-
     /**
      * {@inheritdoc}
      */

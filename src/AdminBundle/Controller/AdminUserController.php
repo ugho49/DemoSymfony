@@ -31,7 +31,7 @@ class AdminUserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('AppBundle:User')->findAll();
+        $users = $em->getRepository(User::class)->findAll();
 
         return $this->render('admin/user/index.html.twig', array(
             'users' => $users,
@@ -52,7 +52,10 @@ class AdminUserController extends Controller
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         $user = new User();
-        $form = $this->createForm(new NewUserType($currentUser), $user);
+        $form = $this->createForm(NewUserType::class, $user, array(
+            "current_user" => $currentUser
+        ));
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -115,7 +118,9 @@ class AdminUserController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $editForm = $this->createForm(new EditUserType($currentUser), $user);
+        $editForm = $this->createForm(EditUserType::class, $user, array(
+            "current_user" => $currentUser
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

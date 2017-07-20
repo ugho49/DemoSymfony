@@ -21,27 +21,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractUserType extends AbstractType
 {
     /**
-     * @var User
-     */
-    protected $user;
-
-    /**
-     * AbstractUserType constructor.
-     * @param User $user
-     */
-    function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var User $currentUser */
+        $currentUser = $options['current_user'];
         $roles = RolesEnum::ALL_ROLES;
 
-        if ($this->user->hasRole(RolesEnum::ROLE_SUPERADMIN)) {
+        if ($currentUser->hasRole(RolesEnum::ROLE_SUPERADMIN)) {
             $roles[RolesEnum::ROLE_SUPERADMIN] = RolesEnum::ROLE_SUPERADMIN;
         }
 
@@ -80,7 +68,10 @@ abstract class AbstractUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => User::class
+            'data_class' => User::class,
+            'current_user' => null
         ));
     }
+
+
 }
