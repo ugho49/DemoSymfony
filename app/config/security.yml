@@ -33,12 +33,13 @@ security:
                 check_path: /login
                 csrf_token_generator: security.csrf.token_manager
                 default_target_path: /
-                success_handler: security.authentication.success.handler
+                success_handler: security.login.success.handler
 
             logout:
                 invalidate_session: true
                 path:   /logout
                 target: /
+                handlers: [security.logout.handler]
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

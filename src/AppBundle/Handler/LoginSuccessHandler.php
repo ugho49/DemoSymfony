@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace AppBundle\Handler;
 
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\HttpUtils;
  * Date: 19/07/2017
  * Time: 11:21
  */
-class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
+class LoginSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
     /**
      * @var EntityManager
@@ -48,6 +48,10 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
         $user = $token->getUser();
         $user->setLastLogin(new \DateTime());
         $this->em->flush();
+
+        $request->getSession()
+            ->getFlashBag()
+            ->add('info', 'Welcome ' . $user->getFullname());
 
         return $response;
     }

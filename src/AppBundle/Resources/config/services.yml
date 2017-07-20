@@ -1,4 +1,7 @@
 services:
-    security.authentication.success.handler:
-        class: AppBundle\EventListener\AuthenticationSuccessHandler
+    security.login.success.handler:
+        class: AppBundle\Handler\LoginSuccessHandler
         arguments: ["@security.http_utils", "@doctrine.orm.entity_manager"]
+
+    security.logout.handler:
+        class: AppBundle\Handler\LogoutHandler
