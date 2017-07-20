@@ -52,13 +52,19 @@ abstract class AbstractUserType extends AbstractType
                 'choices'  => $roles,
                 "choices_as_values" => true,
                 "multiple" => true,
-                "expanded" => false
+                "expanded" => false,
+                "attr" => array(
+                    "class" => "js-select-advanced"
+                )
             ))
             ->add('birthday', DateType::class, array(
                 'required' => false,
                 'widget' => 'single_text',
-                // render as type="date"
-                'html5' => true,
+                'html5' => false,
+                'format' => 'yyyy-MM-dd',
+                'attr' => array(
+                    "class" => "date-advanced"
+                )
             ));
     }
 

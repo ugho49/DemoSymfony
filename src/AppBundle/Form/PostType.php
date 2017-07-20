@@ -32,7 +32,10 @@ class PostType extends AbstractType
             ->add('category', EntityType::class, array(
                 "class" => Category::class,
                 "empty_value" => "Choose a category",
-                "required" => false
+                "required" => false,
+                "attr" => array(
+                    "class" => "js-select-advanced"
+                )
             ));
     }
     

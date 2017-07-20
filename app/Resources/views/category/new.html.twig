@@ -4,7 +4,12 @@
     <h1>Category creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-6 text-left">
                 <a href="{{ path('category_index') }}" class="btn btn-default">

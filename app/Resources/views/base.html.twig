@@ -7,8 +7,10 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         <!-- Stylesheets libs -->
-        <link rel="stylesheet" href="{{ asset('lib/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('lib/font-awesome/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/bootstrap/dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/font-awesome/dist/css/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
         {% block stylesheets %}{% endblock %}
     </head>
@@ -25,7 +27,10 @@
 
         <!-- Scripts libs -->
         <script src="{{ asset('lib/jquery/jquery-3.2.1.min.js') }}"></script>
-        <script src="{{ asset('lib/bootstrap/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('lib/momentjs/dist/moment.min.js') }}"></script>
+        <script src="{{ asset('lib/select2/dist/js/select2.min.js') }}"></script>
+        <script src="{{ asset('lib/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('lib/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
         <script src="{{ asset('assets/js/main.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
