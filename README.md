@@ -8,6 +8,14 @@ A simple blog with post and categories and user.
 I'm not using FOSUserBundle for users.
 
 ## Fixtures 
+
 ```
 php app/console doctrine:fixtures:load
 ```
+
+## TODO
+
+- Design post show
+- post slug
+- Manage comment hierarchy
+- Delete comment
