@@ -18,7 +18,7 @@ class CommentRepository extends EntityRepository
             ->leftJoin("c.post", "p")
             ->where('p = :post')
             ->andWhere('c.parent is null')
-            ->orderBy("c.createdAt", "DESC")
+            ->orderBy("c.createdAt", "ASC")
             ->setParameter('post', $post)
             ->getQuery();
 

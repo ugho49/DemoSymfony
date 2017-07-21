@@ -89,7 +89,7 @@
 
     <div class="row">
         <div class="col-md-12 text-center">
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAddComment">Add a comment</button>
+            <button class="btn btn-primary btn-lg addComment" data-toggle="modal" data-target="#modalAddComment" data-parent-id="">Add a comment</button>
         </div>
 
         <div class="modal fade" role="dialog" id="modalAddComment">
@@ -121,48 +121,19 @@
 
     <div id="comments">
         {% for comment in comments %}
-            <div class="row comment-card">
-                <div class="col-sm-1">
-                    <div class="thumbnail">
-                        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-                    </div>
-                </div>
-
-                <div class="col-sm-11">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h3>{{ comment.title }}</h3>
-                            <p>{{ comment.content }}</p>
-                        </div>
-                        <div class="panel-footer">
-                            <small>Created by {% if comment.user %}{{ comment.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ comment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {% for subComment in comment.childrens %}
-                <div class="row comment-card">
-                    <div class="col-sm-1 col-sm-offset-1">
-                        <div class="thumbnail">
-                            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-10">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h3>{{ subComment.title }}</h3>
-                                <p>{{ subComment.content }}</p>
-                            </div>
-                            <div class="panel-footer">
-                                <small>Created by {% if subComment.user %}{{ subComment.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ subComment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+            {% include ':post/partials:_comment.html.twig' with {"comment": comment} %}
         {% endfor %}
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.addComment').click(function () {
+                var parentId = $(this).data('parent-id');
+                $("#comment_parent").val(parentId);
+            });
+        });
+    </script>
 {% endblock %}

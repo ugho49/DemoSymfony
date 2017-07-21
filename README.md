@@ -17,5 +17,4 @@ php app/console doctrine:fixtures:load
 
 - Design post show
 - post slug
-- Manage comment hierarchy
 - Delete comment

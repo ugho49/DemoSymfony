@@ -1,0 +1,37 @@
+{% set level = comment.level %}
+{% set colBodySm = 11 - level %}
+{% set colBodyXs = 12 - level %}
+{% set canReply = level < 2 %}
+
+<div class="row comment-card">
+    <div class="hidden-xs col-sm-1 col-sm-offset-{{ level }}">
+        <div class="thumbnail">
+            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+        </div>
+    </div>
+
+    <div class="col-xs-{{ colBodyXs }} col-xs-offset-{{ level }} col-sm-offset-0 col-sm-{{ colBodySm }}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>{{ comment.title }}</h3>
+                <p>{{ comment.content }}</p>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <small>Created by {% if comment.user %}{{ comment.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ comment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        {% if canReply %}
+                            <button class="btn btn-primary btn-sm addComment" data-parent-id="{{ comment.id }}" data-toggle="modal" data-target="#modalAddComment">Reply</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for child in comment.childrens %}
+    {% include ':post/partials:_comment.html.twig' with {"comment": child} %}
+{% endfor %}

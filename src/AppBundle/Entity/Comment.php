@@ -32,7 +32,7 @@ class Comment
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=50)
+     * @ORM\Column(name="title", type="string", length=50, nullable=true)
      */
     private $title;
 
@@ -238,5 +238,23 @@ class Comment
     public function getChildrens()
     {
         return $this->childrens;
+    }
+
+    /**
+     * Get the level of the comment
+     *
+     * @return int
+     */
+    public function getLevel() {
+        if ($this->parent == null) {
+            return 0;
+        } else {
+            return $this->parent->getLevel() + 1;
+        }
+    }
+
+    function __toString()
+    {
+        return strval($this->getId());
     }
 }

@@ -2,11 +2,11 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Category;
 use AppBundle\Entity\Comment;
-use AppBundle\Entity\Post;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +21,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, array(
+                "required" => false,
                 "attr" => array(
                     "placeholder" => "Title"
                 )
@@ -28,6 +29,16 @@ class CommentType extends AbstractType
             ->add('content', TextareaType::class, array(
                 "attr" => array(
                     "placeholder" => "Content"
+                )
+            ))
+            ->add('parent', EntityType::class, array(
+                "class" => Comment::class,
+                "required" => false,
+                "attr" => array(
+                    "style" => 'display:none;'
+                ),
+                "label_attr" => array(
+                    "style" => 'display:none;'
                 )
             ));
     }
