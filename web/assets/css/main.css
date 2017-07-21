@@ -73,7 +73,7 @@
     padding:0;
 }
 
-.comment-card h3 {
+.comment-card h4 {
     margin-top: 0;
 }
 
@@ -100,4 +100,18 @@
 .comment-card .panel-body:before {
     border-right-color:#ddd;
     border-width:8px;
+}
+
+.comment-card .panel-footer {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+}
+
+.comment-card .panel {
+    border-radius: 0;
+}
+
+.comment-card .panel-body p {
+    margin: 0;
 }

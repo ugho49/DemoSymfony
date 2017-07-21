@@ -13,7 +13,7 @@
     <div class="col-xs-{{ colBodyXs }} col-xs-offset-{{ level }} col-sm-offset-0 col-sm-{{ colBodySm }}">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h3>{{ comment.title }}</h3>
+                {% if comment.title %}<h4>{{ comment.title }}</h4>{% endif %}
                 <p>{{ comment.content }}</p>
             </div>
             <div class="panel-footer">
@@ -23,7 +23,9 @@
                     </div>
                     <div class="col-xs-4 text-right">
                         {% if canReply %}
-                            <button class="btn btn-primary btn-sm addComment" data-parent-id="{{ comment.id }}" data-toggle="modal" data-target="#modalAddComment">Reply</button>
+                            <button class="btn btn-primary btn-xs addComment" data-parent-id="{{ comment.id }}" data-toggle="modal" data-target="#modalAddComment">
+                                <i class="fa fa-reply fa-align-left" aria-hidden="true"></i>&nbsp;Reply
+                            </button>
                         {% endif %}
                     </div>
                 </div>

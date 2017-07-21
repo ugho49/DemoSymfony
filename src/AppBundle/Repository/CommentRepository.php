@@ -14,11 +14,10 @@ class CommentRepository extends EntityRepository
 {
     public function findByPost($post)
     {
-        $qb = $this->createQueryBuilder('c')
-            ->leftJoin("c.post", "p")
-            ->where('p = :post')
-            ->andWhere('c.parent is null')
-            ->orderBy("c.createdAt", "ASC")
+        $qb = $this->createQueryBuilder('comment')
+            ->where('comment.post = :post')
+            ->andWhere('comment.parent is null')
+            ->orderBy("comment.createdAt", "ASC")
             ->setParameter('post', $post)
             ->getQuery();
 
