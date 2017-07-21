@@ -68,3 +68,36 @@
 .my-card > .my-card-footer-small {
     padding: 0 15px;
 }
+
+.comment-card .thumbnail {
+    padding:0;
+}
+
+.comment-card h3 {
+    margin-top: 0;
+}
+
+.comment-card .panel-body:after,
+.comment-card .panel-body:before {
+    position:absolute;
+    top:25px;
+    left:-1px;
+    right:100%;
+    width:0;
+    height:0;
+    display:block;
+    content:" ";
+    border-color:transparent;
+    border-style:solid solid outset;
+    pointer-events:none;
+}
+.comment-card .panel-body:after {
+    border-width:8px;
+    border-right-color:#fff;
+    margin-top:0;
+    margin-left:1px;
+}
+.comment-card .panel-body:before {
+    border-right-color:#ddd;
+    border-width:8px;
+}

@@ -42,7 +42,7 @@ class Post
     private $content;
 
     /**
-     * @var Category
+     * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category")
      */
@@ -56,11 +56,19 @@ class Post
     private $user;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="post")
+     */
+    private $comments;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -181,5 +189,38 @@ class Post
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param Comment $comments
+     * @return Post
+     */
+    public function addComment(Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param Comment $comments
+     */
+    public function removeComment(Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Comment;
 use AppBundle\Entity\Post;
 use AppBundle\Entity\User;
+use AppBundle\Form\CommentType;
 use AppBundle\Form\PostType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -95,10 +97,13 @@ class PostController extends Controller
     public function showAction(Post $post)
     {
         $deleteForm = $this->createDeleteForm($post);
+        $commentForm = $this->createForm(CommentType::class, new Comment());
+
 
         return $this->render('post/show.html.twig', array(
             'post' => $post,
             'delete_form' => $deleteForm->createView(),
+            'comment_form' => $commentForm->createView()
         ));
     }
 
@@ -139,6 +144,45 @@ class PostController extends Controller
             'post' => $post,
             'edit_form' => $editForm->createView()
         ));
+    }
+
+    /**
+     * Process form to add a comment to an existing post entity.
+     *
+     * @Route("/{id}/comment", name="post_new_comment")
+     * @Method({"POST"})
+     * @param Request $request
+     * @param Post $post
+     * @return RedirectResponse|Response
+     */
+    public function newCommentAction(Request $request, Post $post)
+    {
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($this->container->get('security.authorization_checker')->isGranted("IS_AUTHENTICATED_FULLY")) {
+                /** @var User $currentUser */
+                $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+                $comment->setUser($currentUser);
+            }
+
+            $comment->setPost($post);
+
+            $em->persist($comment);
+            $em->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'The comment has been successfully added');
+
+            return $this->redirectToRoute('post_show', array('id' => $post->getId()));
+        }
+
+        return $this->redirectToRoute('post_show', array('id' => $post->getId()));
     }
 
     /**
