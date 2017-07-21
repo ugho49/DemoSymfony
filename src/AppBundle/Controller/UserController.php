@@ -119,6 +119,10 @@ class UserController extends Controller
                 ->getFlashBag()
                 ->add('info', 'The password has been successfully updated');
 
+            // TODO : send email
+            //$body = $this->renderView("emails/registration.html.twig");
+            //$this->get("mail.service")->sendMail("test", "test@test.fr", $body);
+
             return $this->redirectToRoute('user_profile');
         }
 
