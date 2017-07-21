@@ -2,17 +2,23 @@
 
 namespace ApiBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use ApiBundle\Traits\RestControler;
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
+    use RestControler;
+
     /**
      * @Route("/")
      */
     public function indexAction()
     {
-        return JsonResponse::create(["Welcome to API"]);
+        /** @var User $user */
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->jsonResponse($user);
     }
 }

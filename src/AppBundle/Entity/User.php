@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Traits\Timestampable;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,22 +45,32 @@ class User implements UserInterface, AdvancedUserInterface
     private $lastname;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\Email()
      */
     private $email;
 
     /**
+     * @var string
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(type="string", length=100)
      */
     private $password;
 
     /**
+     * @var bool
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(type="boolean")
      */
     private $enabled = true;
 
     /**
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(type="json_array")
      */
     private $roles = [];
@@ -70,6 +81,8 @@ class User implements UserInterface, AdvancedUserInterface
     private $birthday;
 
     /**
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
