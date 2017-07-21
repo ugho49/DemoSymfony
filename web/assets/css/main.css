@@ -41,6 +41,10 @@
     height: 300px;
 }
 
+.btn-border-left {
+    border-left: 1px solid #ddd;
+}
+
 .my-card a:not(.btn),
 .my-card a:not(.btn):hover,
 .my-card a:not(.btn):active,
