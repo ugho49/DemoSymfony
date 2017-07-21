@@ -1,6 +1,7 @@
 {% if app.user and app.user.passwordValidUntil %}
     <div class="alert alert-warning" role="alert">
-        You have to change you're password as soon as possible
+        You have to change your password as soon as possible<br>
+        Otherwise your account will be inactive on <strong>{{ app.user.passwordValidUntil|date('Y-m-d \\a\\t H:i') }}</strong>
     </div>
 {% endif %}
 
