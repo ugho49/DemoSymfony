@@ -1,0 +1,32 @@
+.btn {
+    border-radius: 0;
+}
+
+.panel-post {
+    color: #000000;
+    border-radius: 0;
+}
+
+.panel-post > .panel-body {
+    height: 300px;
+}
+
+.panel-post a,
+.panel-post a:hover,
+.panel-post a:active,
+.panel-post a:focus,
+.panel-post a:visited {
+    text-decoration: none;
+    color: #000000;
+}
+
+.panel-post > .panel-footer {
+    color: #337ab7;
+}
+
+.panel-post > .edit-button {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    border-radius: 0;
+}

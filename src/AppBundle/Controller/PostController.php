@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Post;
 use AppBundle\Entity\User;
 use AppBundle\Form\PostType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -50,6 +51,7 @@ class PostController extends Controller
      *
      * @Route("/new", name="post_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @return RedirectResponse|Response
      */
@@ -105,6 +107,7 @@ class PostController extends Controller
      *
      * @Route("/{id}/edit", name="post_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param Post $post
      * @return RedirectResponse|Response
@@ -143,6 +146,7 @@ class PostController extends Controller
      *
      * @Route("/{id}", name="post_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param Post $post
      * @return RedirectResponse

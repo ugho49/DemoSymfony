@@ -15,9 +15,9 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-navbar-collapse">
-            {% if app.user %}
-                <ul class="nav navbar-nav">
-                    <li class="{% if route starts with 'post' %}active{% endif %}"><a href="{{ path("post_index") }}">Posts</a></li>
+            <ul class="nav navbar-nav">
+                <li class="{% if route starts with 'post' %}active{% endif %}"><a href="{{ path("post_index") }}">Posts</a></li>
+                {% if app.user %}
                     <li class="{% if route starts with 'category' %}active{% endif %}"><a href="{{ path("category_index") }}">Categories</a></li>
 
                     {% if is_granted("ROLE_ADMIN") %}
@@ -28,8 +28,8 @@
                             </ul>
                         </li>
                     {% endif %}
-                </ul>
-            {% endif %}
+                {% endif %}
+            </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}

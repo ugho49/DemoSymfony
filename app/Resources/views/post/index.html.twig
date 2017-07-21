@@ -1,58 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="row text-center">
-        <a href="{{ path('post_new') }}" class="btn btn-success">
-            Create a new post
-            <i class="fa fa-plus fa-align-right"></i>
-        </a>
-    </div>
+    {% if app.user  %}
+        <div class="row text-center">
+            <a href="{{ path('post_new') }}" class="btn btn-success">
+                Create a new post
+                <i class="fa fa-plus fa-align-right"></i>
+            </a>
+        </div>
 
-    <hr>
+        <hr>
+    {% endif %}
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Content</th>
-                <th>Categories</th>
-                <th>Created By</th>
-                <th colspan="2">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for post in posts %}
-                <tr>
-                    <td>{{ post.name }}</td>
-                    <td class="text-justify">{{ post.content|slice(0, 100) ~ '...' }}</td>
-                    <td>
-                        {% for category in post.categories %}
-                            <span class="label label-default">{{ category.name }}</span>
-                        {% endfor %}
-                    </td>
-                    <td>{{ post.user.fullname }}</td>
-                    <td>
-                        {% if app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-primary">
-                                <i class="fa fa-pencil fa-align-left"></i>
-                                edit
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ path('post_show', { 'id': post.id }) }}" class="btn btn-default">
-                            <i class="fa fa-eye fa-align-left"></i>
-                            show
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-md-4">
+                <div class="panel panel-default panel-post">
+                    {% if app.user and app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-default edit-button">
+                            <i class="fa fa-pencil-square-o"></i>
                         </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">No post</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                    {% endif %}
+
+                    <a href="{{ path('post_show', { 'id': post.id }) }}">
+                        <div class="panel-body text-justify">
+                            <h3>{{ post.name|truncate(10, true)|raw }}</h3>
+                            <p>{{ post.content|truncate(400, true)|raw }}</p>
+                        </div>
+                    </a>
+
+                    <div class="panel-footer">
+                        <small>Created by {{ post.user.firstname }} - <span class="timeago" data-time="{{ post.createdAt|date('Y-m-d H:i:s') }}"></span></small>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        No post found
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
+
+
 {% endblock %}

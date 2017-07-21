@@ -44,7 +44,7 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/post, roles: ROLE_USER }
+        - { path: ^/post, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/category, roles: ROLE_USER }
         - { path: ^/user, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }

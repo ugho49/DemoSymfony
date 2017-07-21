@@ -43,8 +43,11 @@ class UserType extends AbstractType
             ->add('birthday', DateType::class, array(
                 'required' => false,
                 'widget' => 'single_text',
-                // render as type="date"
-                'html5' => true,
+                'html5' => false,
+                'format' => 'yyyy-MM-dd',
+                'attr' => array(
+                    "class" => "date-advanced"
+                )
             ));
     }
 

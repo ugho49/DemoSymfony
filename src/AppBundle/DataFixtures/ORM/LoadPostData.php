@@ -45,7 +45,7 @@ class LoadPostData extends AbstractFixture implements OrderedFixtureInterface
                 umquam controversia, quid ego intellegerem, sed quid probarem.");
 
             $categories = [];
-            for ($j = 0; $j < 5; ++$j) {
+            for ($j = 0; $j < 3; ++$j) {
                 $randCategory = mt_rand(0, 20);
                 if ($randCategory != 0) {
                     /** @var Category $category */
