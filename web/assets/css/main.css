@@ -2,22 +2,52 @@
     border-radius: 0;
 }
 
+.btn-link-info,
+.btn-link-info,
+.btn-link-info:hover,
+.btn-link-info:active,
+.btn-link-info:focus,
+.btn-link-info:visited {
+    color: #337ab7;
+}
+
+.btn-link-danger,
+.btn-link-danger,
+.btn-link-danger:hover,
+.btn-link-danger:active,
+.btn-link-danger:focus,
+.btn-link-danger:visited {
+    color: #d9534f;
+}
+
+.btn-link-success,
+.btn-link-success,
+.btn-link-success:hover,
+.btn-link-success:active,
+.btn-link-success:focus,
+.btn-link-success:visited {
+    color: #5cb85c;
+}
+
 .my-card {
-    color: #000000;
     border-radius: 0;
+}
+
+.my-card-small > .panel-body {
+    height: 50px;
 }
 
 .my-card > .panel-body {
     height: 300px;
 }
 
-.my-card a,
-.my-card a:hover,
-.my-card a:active,
-.my-card a:focus,
-.my-card a:visited {
+.my-card a:not(.btn),
+.my-card a:not(.btn):hover,
+.my-card a:not(.btn):active,
+.my-card a:not(.btn):focus,
+.my-card a:not(.btn):visited {
     text-decoration: none;
-    color: #000000;
+    color: inherit;
 }
 
 .my-card > .panel-footer {
@@ -29,4 +59,8 @@
     top: 0;
     right: 15px;
     border-radius: 0;
+}
+
+.my-card > .my-card-footer-small {
+    padding: 0 15px;
 }
