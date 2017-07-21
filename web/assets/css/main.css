@@ -29,6 +29,15 @@
     color: #5cb85c;
 }
 
+.btn-link-warning,
+.btn-link-warning,
+.btn-link-warning:hover,
+.btn-link-warning:active,
+.btn-link-warning:focus,
+.btn-link-warning:visited {
+    color: #f0ad4e;
+}
+
 .my-card {
     border-radius: 0;
 }

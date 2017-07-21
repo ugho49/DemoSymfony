@@ -2,33 +2,71 @@
 
 {% block body %}
 
-    <h1>Authentification</h1>
-    <hr>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1 class="text-center">Authentification</h1>
+            <hr>
 
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    <form action="{{ path('login') }}" method="post">
+            <form action="{{ path('login') }}" method="post">
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="row">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <div class="form-group">
-            <label for="email">Email :</label>
-            <input type="email" id="email" placeholder="Enter your email ..." name="_username" class="form-control" value="{{ last_email }}" required="required"/>
+                    <div class="form-group">
+                        <label for="email">Email :</label>
+                        <input type="email" id="email" placeholder="Enter your email ..." name="_username" class="form-control" value="{{ last_email }}" required="required"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password :</label>
+                        <input type="password" id="password" placeholder="Enter your password ..." name="_password" class="form-control" required="required"/>
+                    </div>
+
+                    {#
+                        If you want to control the URL the user
+                        is redirected to on success (more details below)
+                        <input type="hidden" name="_target_path" value="/account" />
+                    #}
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6 text-left">
+                        <a class="btn btn-link btn-link-warning" data-toggle="modal" data-target="#modalForgotPassword">Forgot your password ?</a>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <button type="submit" class="btn btn-primary">login</button>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label for="password">Password :</label>
-            <input type="password" id="password" placeholder="Enter your password ..." name="_password" class="form-control" required="required"/>
+    <div class="modal fade" role="dialog" id="modalForgotPassword">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Forgot your password ?</h4>
+                </div>
+
+                {{ form_start(forgot_password_form, {'action': path('forgot_password')}) }}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_widget(forgot_password_form) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Send me a new password</button>
+                </div>
+                {{ form_end(forgot_password_form) }}
+            </div>
         </div>
+    </div>
 
-        {#
-            If you want to control the URL the user
-            is redirected to on success (more details below)
-            <input type="hidden" name="_target_path" value="/account" />
-        #}
-
-        <button type="submit" class="btn btn-primary">login</button>
-    </form>
 {% endblock %}

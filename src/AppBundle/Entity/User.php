@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Traits\Timestampable;
+use DateTime;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -86,6 +87,13 @@ class User implements UserInterface, AdvancedUserInterface
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
+
+    /**
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="password_valid_until", type="datetime", nullable=true)
+     */
+    private $passwordValidUntil;
 
     /**
      * Get id
@@ -266,6 +274,31 @@ class User implements UserInterface, AdvancedUserInterface
         return $this->birthday;
     }
 
+
+    /**
+     * Set passwordValidUntil
+     *
+     * @param \DateTime $passwordValidUntil
+     *
+     * @return User
+     */
+    public function setPasswordValidUntil($passwordValidUntil)
+    {
+        $this->passwordValidUntil = $passwordValidUntil;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordValidUntil
+     *
+     * @return \DateTime
+     */
+    public function getPasswordValidUntil()
+    {
+        return $this->passwordValidUntil;
+    }
+
     //Override methods :
 
     public function getUsername()
@@ -304,7 +337,7 @@ class User implements UserInterface, AdvancedUserInterface
 
     public function isCredentialsNonExpired()
     {
-        return true;
+        return $this->passwordValidUntil == null || ($this->passwordValidUntil >= new DateTime("now"));
     }
 
     public function isEnabled()

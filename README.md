@@ -19,3 +19,4 @@ php app/console doctrine:fixtures:load
 - post slug
 - Delete comment
 - Email
+- User forget password

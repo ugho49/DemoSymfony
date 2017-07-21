@@ -112,6 +112,8 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $newPassword = $form->get("new_password")->getData();
+
+            $currentUserInBase->setPasswordValidUntil(null);
             $currentUserInBase->setPassword($passwordEncoder->encodePassword($currentUserInBase, $newPassword));
             $em->flush();
 
@@ -120,8 +122,11 @@ class UserController extends Controller
                 ->add('info', 'The password has been successfully updated');
 
             // TODO : send email
-            //$body = $this->renderView("emails/registration.html.twig");
-            //$this->get("mail.service")->sendMail("test", "test@test.fr", $body);
+
+            // $this->get("mail.service")->sendMail(
+            //     "test", "test@test.fr",
+            //     $this->renderView("emails/registration.html.twig")
+            // );
 
             return $this->redirectToRoute('user_profile');
         }

@@ -1,3 +1,9 @@
+{% if app.user and app.user.passwordValidUntil %}
+    <div class="alert alert-warning" role="alert">
+        You have to change you're password as soon as possible
+    </div>
+{% endif %}
+
 {% for type, messages in app.session.flashbag.all() %}
     {% for message in messages %}
         <div class="alert alert-{{type}} alert-dismissible" role="alert">
