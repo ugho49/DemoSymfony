@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
+    public function findByPost($post)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin("c.post", "p")
+            ->where('p = :post')
+            ->andWhere('c.parent is null')
+            ->orderBy("c.createdAt", "DESC")
+            ->setParameter('post', $post)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
 }

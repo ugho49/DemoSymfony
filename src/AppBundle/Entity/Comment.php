@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use AppBundle\Entity\User;
 use AppBundle\Traits\Timestampable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,20 +52,35 @@ class Comment
     private $post;
 
     /**
-     * @var Comment
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Comment")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     */
-    private $parent;
-
-    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     private $user;
+
+    /**
+     * @var Comment
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Comment", inversedBy="childrens")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     */
+    private $parent;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="parent")
+     */
+    private $childrens;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->childrens = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -147,7 +164,7 @@ class Comment
     /**
      * Set parent
      *
-     * @param \AppBundle\Entity\Comment $parent
+     * @param Comment $parent
      * @return Comment
      */
     public function setParent(Comment $parent = null)
@@ -188,5 +205,38 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add childrens
+     *
+     * @param Comment $childrens
+     * @return Comment
+     */
+    public function addChildren(Comment $childrens)
+    {
+        $this->childrens[] = $childrens;
+
+        return $this;
+    }
+
+    /**
+     * Remove childrens
+     *
+     * @param Comment $childrens
+     */
+    public function removeChildren(Comment $childrens)
+    {
+        $this->childrens->removeElement($childrens);
+    }
+
+    /**
+     * Get childrens
+     *
+     * @return Collection
+     */
+    public function getChildrens()
+    {
+        return $this->childrens;
     }
 }

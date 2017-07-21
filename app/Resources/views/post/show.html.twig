@@ -120,7 +120,7 @@
     <br>
 
     <div id="comments">
-        {% for comment in post.comments %}
+        {% for comment in comments %}
             <div class="row comment-card">
                 <div class="col-sm-1">
                     <div class="thumbnail">
@@ -135,11 +135,33 @@
                             <p>{{ comment.content }}</p>
                         </div>
                         <div class="panel-footer">
-                            <small>Created by {% if comment.user %}{{ post.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ comment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
+                            <small>Created by {% if comment.user %}{{ comment.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ comment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {% for subComment in comment.childrens %}
+                <div class="row comment-card">
+                    <div class="col-sm-1 col-sm-offset-1">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-10">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h3>{{ subComment.title }}</h3>
+                                <p>{{ subComment.content }}</p>
+                            </div>
+                            <div class="panel-footer">
+                                <small>Created by {% if subComment.user %}{{ subComment.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ subComment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         {% endfor %}
     </div>
 

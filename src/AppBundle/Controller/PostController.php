@@ -99,9 +99,12 @@ class PostController extends Controller
         $deleteForm = $this->createDeleteForm($post);
         $commentForm = $this->createForm(CommentType::class, new Comment());
 
+        $repo = $this->getDoctrine()->getManager()->getRepository(Comment::class);
+        $comments = $repo->findByPost($post);
 
         return $this->render('post/show.html.twig', array(
             'post' => $post,
+            'comments' => $comments,
             'delete_form' => $deleteForm->createView(),
             'comment_form' => $commentForm->createView()
         ));

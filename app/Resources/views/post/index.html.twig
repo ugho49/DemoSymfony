@@ -24,7 +24,7 @@
 
                     <a href="{{ path('post_show', { 'id': post.id }) }}">
                         <div class="panel-body text-justify">
-                            <h3>{{ post.name|truncate(10, true)|raw }}</h3>
+                            <h3>{{ post.name|truncate(20, true)|raw }}</h3>
                             <p>{{ post.content|truncate(400, true)|raw }}</p>
                         </div>
                     </a>
