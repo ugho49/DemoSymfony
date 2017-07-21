@@ -48,6 +48,7 @@ security:
         - { path: ^/category, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user-profile, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api, roles: ROLE_USER }
 
     role_hierarchy:
         ROLE_EDITOR:     [ROLE_USER]
