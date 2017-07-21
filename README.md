@@ -18,3 +18,4 @@ php app/console doctrine:fixtures:load
 - Design post show
 - post slug
 - Delete comment
+- Email
