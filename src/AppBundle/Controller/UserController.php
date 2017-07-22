@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\File;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserChangePasswordType;
 use AppBundle\Form\UserType;
@@ -38,6 +39,22 @@ class UserController extends Controller
     {
         /** @var User $currentUser */
         $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        //TODO : begin remove
+
+        /*$em   = $this->getDoctrine()->getManager();
+        $userRepo = $em->getRepository(User::class);
+        $currentUserInBase = $userRepo->find($user->getId());
+
+        if ($currentUserInBase->getFile()) {
+
+            //$currentUserInBase->setFile(null);
+            $em->remove($currentUserInBase->getFile());
+        }
+
+        $em->flush();*/
+
+        // TODO: end remove
 
         return $this->render('user/show.html.twig', array(
             'user' => $user,

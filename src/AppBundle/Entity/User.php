@@ -3,13 +3,15 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Traits\Timestampable;
+use AppBundle\Traits\UploadableSingle;
 use DateTime;
-use JMS\Serializer\Annotation as Serializer;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Serializable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="user")
@@ -17,10 +19,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity("email")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface, AdvancedUserInterface
+class User implements UserInterface, AdvancedUserInterface, Serializable
 {
 
-    use Timestampable;
+    use Timestampable, UploadableSingle;
 
     /**
      * @var int
@@ -94,6 +96,14 @@ class User implements UserInterface, AdvancedUserInterface
      * @ORM\Column(name="password_valid_until", type="datetime", nullable=true)
      */
     private $passwordValidUntil;
+
+    /**
+     * @var File
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\File", cascade={"persist"})
+     * @ORM\JoinColumn(name="picture_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $file;
 
     /**
      * Get id
@@ -343,5 +353,46 @@ class User implements UserInterface, AdvancedUserInterface
     public function isEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->firstname,
+            $this->lastname,
+            $this->email,
+            $this->password,
+            $this->enabled,
+        ));
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+
+        list(
+            $this->id,
+            $this->firstname,
+            $this->lastname,
+            $this->email,
+            $this->password,
+            $this->enabled
+        ) = $data;
     }
 }

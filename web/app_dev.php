@@ -19,6 +19,9 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 }
 
 require __DIR__.'/../app/autoload.php';
+
+define ( 'WEB_DIR', dirname ( __FILE__ ) );
+
 Debug::enable();
 
 $kernel = new AppKernel('dev', true);
