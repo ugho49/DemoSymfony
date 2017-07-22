@@ -73,7 +73,7 @@ class SecurityController extends Controller
 
         if ($form->isValid()) {
             $passwordEncoder = $this->get('security.password_encoder');
-            $newPasswordPlain = $this->generateRandomString(15);
+            $newPasswordPlain = $this->get("string.generator")->generateRandomString(15);
 
             $dateValidUntil = new DateTime('now');
             $dateValidUntil->add(new DateInterval('PT2H'));
@@ -95,20 +95,5 @@ class SecurityController extends Controller
         }
 
         return $this->redirectToRoute('login');
-    }
-
-    /**
-     * Generate a new random string
-     *
-     * @return string
-     */
-    private function generateRandomString($length = 10) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
 }

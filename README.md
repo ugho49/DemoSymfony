@@ -15,8 +15,9 @@ php app/console doctrine:fixtures:load
 
 ## TODO
 
-- Design post show
-- post slug
-- Delete comment
-- Email
-- User forget password
+- [ ] Design post show
+- [ ] post slug
+- [ ] Delete comment
+- [ ] Send Email for actions
+- [ ] User profile picture (table file reusable)
+- [ ] Auto generate password in user creation admin
