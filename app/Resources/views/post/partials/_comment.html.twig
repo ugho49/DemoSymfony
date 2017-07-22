@@ -6,7 +6,11 @@
 <div class="row comment-card">
     <div class="hidden-xs col-sm-1 col-sm-offset-{{ level }}">
         <div class="thumbnail">
-            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+            {% if comment.user.file %}
+                <img class="img-responsive comment-user-photo" src="{{ comment.user.file.webPath }}" alt="profile picture" style="width: 200px;">
+            {% else %}
+                <img class="img-responsive comment-user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+            {% endif %}
         </div>
     </div>
 

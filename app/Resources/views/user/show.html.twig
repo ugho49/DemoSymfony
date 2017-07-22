@@ -33,7 +33,9 @@
     </table>
     
     {% if user.file %}
-        <img src="{{ user.file.webPath }}" alt="profile picture" style="width: 200px;">
+        <img src="{{ user.file.webPath }}" alt="profile picture" class="img-responsive user-photo">
+    {% else %}
+        <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile picture" class="img-responsive user-photo">
     {% endif %}
 
     <div class="row text-center">

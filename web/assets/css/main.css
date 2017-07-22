@@ -156,3 +156,13 @@
 .comment-card .panel-body p {
     margin: 0;
 }
+
+.comment-user-photo {
+    width: 70px !important;
+    height: 70px !important;
+}
+
+.user-photo {
+    width: 100px !important;
+    height: 100px !important;
+}
