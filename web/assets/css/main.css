@@ -2,6 +2,38 @@
     border-radius: 0;
 }
 
+.modal-content {
+    border-radius: 0;
+}
+
+.modal-danger .modal-header {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.modal-success .modal-header {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.modal-info .modal-header {
+    background-color: #337ab7;
+    color: #fff;
+}
+
+.modal-warning .modal-header {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.modal-danger .close,
+.modal-success .close,
+.modal-info .close,
+.modal-warning .close {
+    color: #fff;
+}
+
+
 .btn-link-info,
 .btn-link-info,
 .btn-link-info:hover,

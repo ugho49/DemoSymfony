@@ -22,6 +22,11 @@
                         <small>Created by {% if comment.user %}{{ comment.user.firstname }}{% else %}Anonymous{% endif %} - <span class="timeago" data-time="{{ comment.createdAt|date('Y-m-d H:i:s') }}"></span></small>
                     </div>
                     <div class="col-xs-4 text-right">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <button class="btn btn-danger btn-xs deleteComment" data-delete-link="{{ path('post_delete_comment', {"id": comment.id}) }}" data-toggle="modal" data-target="#modalDeleteComment">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete
+                            </button>
+                        {% endif %}
                         {% if canReply %}
                             <button class="btn btn-primary btn-xs addComment" data-parent-id="{{ comment.id }}" data-toggle="modal" data-target="#modalAddComment">
                                 <i class="fa fa-reply fa-align-left" aria-hidden="true"></i>&nbsp;Reply

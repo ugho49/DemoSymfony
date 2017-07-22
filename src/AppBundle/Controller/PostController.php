@@ -96,17 +96,20 @@ class PostController extends Controller
      */
     public function showAction(Post $post)
     {
-        $deleteForm = $this->createDeleteForm($post);
+        $deleteForm = $this->createDeletePostForm($post);
         $commentForm = $this->createForm(CommentType::class, new Comment());
 
         $repo = $this->getDoctrine()->getManager()->getRepository(Comment::class);
         $comments = $repo->findByPost($post);
 
+        $deleteCommentForm = $this->createDeleteCommentForm(0);
+
         return $this->render('post/show.html.twig', array(
-            'post' => $post,
-            'comments' => $comments,
-            'delete_form' => $deleteForm->createView(),
-            'comment_form' => $commentForm->createView()
+            'post'                  => $post,
+            'comments'              => $comments,
+            'delete_form'           => $deleteForm->createView(),
+            'comment_form'          => $commentForm->createView(),
+            'delete_comment_form'   => $deleteCommentForm->createView()
         ));
     }
 
@@ -189,6 +192,35 @@ class PostController extends Controller
     }
 
     /**
+     * Deletes a comment entity.
+     *
+     * @Route("/{id}/comment", name="post_delete_comment")
+     * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @param Request $request
+     * @param Comment $comment
+     * @return RedirectResponse
+     */
+    public function deleteCommentAction(Request $request, Comment $comment)
+    {
+        $form = $this->createDeleteCommentForm($comment->getId());
+        $form->handleRequest($request);
+        $post_id = $comment->getPost()->getId();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('info', 'The comment has been successfully deleted');
+        }
+
+        return $this->redirectToRoute('post_show', array('id' => $post_id));
+    }
+
+    /**
      * Deletes a post entity.
      *
      * @Route("/{id}", name="post_delete")
@@ -208,7 +240,7 @@ class PostController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createDeleteForm($post);
+        $form = $this->createDeletePostForm($post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -231,12 +263,26 @@ class PostController extends Controller
      *
      * @return Form The form
      */
-    private function createDeleteForm(Post $post)
+    private function createDeletePostForm(Post $post)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('post_delete', array('id' => $post->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Creates a form to delete a comment entity.
+     *
+     * @param int $comment_id
+     * @return Form The form
+     */
+    private function createDeleteCommentForm(int $comment_id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('post_delete_comment', array('id' => $comment_id)))
+            ->setMethod('DELETE')
+            ->getForm();
     }
 }

@@ -56,17 +56,17 @@
         {% if canEdit %}
             <div class="col-md-6 text-right">
                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">
-                    <i class="fa fa-trash fa-align-left"></i>
+                    <i class="fa fa-trash-o"></i>
                     delete
                 </button>
             </div>
 
-            <div class="modal fade" role="dialog" id="modalDelete">
+            <div class="modal fade modal-danger" role="dialog" id="modalDelete">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Delete</h4>
+                            <h4 class="modal-title">Delete Post</h4>
                         </div>
                         <div class="modal-body">
                             <p>Are you sure ?</p>
@@ -74,7 +74,7 @@
                         <div class="modal-footer">
                             {{ form_start(delete_form) }}
                             <button class="btn btn-danger" type="submit">
-                                <i class="fa fa-trash fa-align-left"></i>
+                                <i class="fa fa-trash-o"></i>
                                 delete
                             </button>
                             {{ form_end(delete_form) }}
@@ -92,7 +92,7 @@
             <button class="btn btn-primary btn-lg addComment" data-toggle="modal" data-target="#modalAddComment" data-parent-id="">Add a comment</button>
         </div>
 
-        <div class="modal fade" role="dialog" id="modalAddComment">
+        <div class="modal fade modal-info" role="dialog" id="modalAddComment">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -125,6 +125,30 @@
         {% endfor %}
     </div>
 
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="modal fade modal-danger" role="dialog" id="modalDeleteComment">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Delete comment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_start(delete_comment_form, {'action':''}) }}
+                        <button class="btn btn-danger" type="submit">
+                            <i class="fa fa-trash-o"></i>
+                            delete
+                        </button>
+                        {{ form_end(delete_comment_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -133,6 +157,11 @@
             $('.addComment').click(function () {
                 var parentId = $(this).data('parent-id');
                 $("#comment_parent").val(parentId);
+            });
+
+            $('.deleteComment').click(function () {
+                var deleteLink = $(this).data('delete-link');
+                $("#modalDeleteComment form").attr('action', deleteLink);
             });
         });
     </script>
