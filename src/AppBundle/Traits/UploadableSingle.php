@@ -25,7 +25,7 @@ trait UploadableSingle
      *
      * @Serializer\Exclude()
      */
-    private $uploadedFile;
+    protected $uploadedFile;
 
     /**
      * @var File

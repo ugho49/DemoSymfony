@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -98,12 +99,12 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
     private $passwordValidUntil;
 
     /**
-     * @var File
+     * @var UploadedFile
+     * @Assert\Image(minHeight="100", minWidth="100")
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\File", cascade={"persist"})
-     * @ORM\JoinColumn(name="picture_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Serializer\Exclude()
      */
-    protected $file;
+    protected $uploadedFile;
 
     /**
      * Get id

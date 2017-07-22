@@ -7,9 +7,9 @@
     <div class="hidden-xs col-sm-1 col-sm-offset-{{ level }}">
         <div class="thumbnail">
             {% if comment.user.file %}
-                <img class="img-responsive comment-user-photo" src="{{ comment.user.file.webPath }}" alt="profile picture" style="width: 200px;">
+                <img class="img-responsive comment-user-photo" src="{{ comment.user.file.webPath }}" alt="profile picture">
             {% else %}
-                <img class="img-responsive comment-user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                <img class="img-responsive comment-user-photo" src="{{ asset('assets/img/avatar_2x.png') }}" alt="profile picture">
             {% endif %}
         </div>
     </div>
