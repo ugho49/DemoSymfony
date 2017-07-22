@@ -8,17 +8,11 @@
 
 namespace AppBundle\Form;
 
-use AdminBundle\Enum\RolesEnum;
-use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class UserChangePasswordType extends AbstractType
 {
@@ -35,6 +29,9 @@ class UserChangePasswordType extends AbstractType
             ))
             ->add('new_password', RepeatedType::class, array(
                 'type' => PasswordType::class,
+                'constraints' => array(
+                    new Length(array('min' => 8))
+                ),
                 'invalid_message' => 'The New and Repeat password fields must match.',
                 'options' => array('attr' => array('class' => 'password-field')),
                 'required' => true,

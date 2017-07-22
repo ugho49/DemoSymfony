@@ -18,7 +18,8 @@ php app/console doctrine:fixtures:load
 - [ ] Design post show
 - [ ] post slug
 - [ ] Delete comment
+- [x] Change Delete categorie
 - [ ] Send Email for actions
 - [ ] User profile picture (table file reusable)
 - [x] Auto generate password in user creation admin
-- [ ] Complexe password required when change
+- [x] Complexe password required when change

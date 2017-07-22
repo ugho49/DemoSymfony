@@ -32,15 +32,11 @@ class CategoryController extends Controller
 
         $categories = $em->getRepository(Category::class)->findAll();
 
-        $deleteForms = [];
-
-        foreach ($categories as $category) {
-            $deleteForms[$category->getId()] = $this->createDeleteForm($category)->createView();
-        }
+        $deleteForm = $this->createDeleteForm(0);
 
         return $this->render('category/index.html.twig', array(
             'categories'    =>  $categories,
-            'delete_forms'  =>  $deleteForms
+            'delete_form'  =>  $deleteForm->createView()
         ));
     }
 
@@ -120,7 +116,7 @@ class CategoryController extends Controller
      */
     public function deleteAction(Request $request, Category $category)
     {
-        $form = $this->createDeleteForm($category);
+        $form = $this->createDeleteForm($category->getId());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -139,14 +135,14 @@ class CategoryController extends Controller
     /**
      * Creates a form to delete a category entity.
      *
-     * @param Category $category The category entity
-     *
+     * @param int $category_id
      * @return Form The form
+     *
      */
-    private function createDeleteForm(Category $category)
+    private function createDeleteForm(int $category_id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('category_delete', array('id' => $category->getId())))
+            ->setAction($this->generateUrl('category_delete', array('id' => $category_id)))
             ->setMethod('DELETE')
             ->getForm()
         ;
