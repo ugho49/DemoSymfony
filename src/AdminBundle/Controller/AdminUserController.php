@@ -3,9 +3,12 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Enum\RolesEnum;
+use AdminBundle\Form\AdminUserType;
 use AdminBundle\Form\EditUserType;
 use AdminBundle\Form\NewUserType;
 use AppBundle\Entity\User;
+use DateInterval;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -52,7 +55,7 @@ class AdminUserController extends Controller
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         $user = new User();
-        $form = $this->createForm(NewUserType::class, $user, array(
+        $form = $this->createForm(AdminUserType::class, $user, array(
             "current_user" => $currentUser
         ));
 
@@ -61,12 +64,26 @@ class AdminUserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $plainPassword = $user->getPassword();
+            $plainPassword = $this->get("string.generator")->generateRandomString(15);
             $passwordEncoder = $this->get('security.password_encoder');
             $user->setPassword($passwordEncoder->encodePassword($user, $plainPassword));
 
+            $dateValidUntil = new DateTime();
+            $dateValidUntil->add(new DateInterval('P7D'));
+            // Password valid for 7 days
+            $user->setPasswordValidUntil($dateValidUntil);
+
             $em->persist($user);
             $em->flush();
+
+            $this->get("mail.service")->sendMail(
+                "Welcome", $user->getEmail(),
+                $this->renderView("emails/new-user.html.twig", [
+                    "user"          => $user,
+                    "password"      => $plainPassword,
+                    "valid_until"   => $dateValidUntil
+                ])
+            );
 
             $request->getSession()
                 ->getFlashBag()
@@ -118,7 +135,7 @@ class AdminUserController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $editForm = $this->createForm(EditUserType::class, $user, array(
+        $editForm = $this->createForm(AdminUserType::class, $user, array(
             "current_user" => $currentUser
         ));
         $editForm->handleRequest($request);

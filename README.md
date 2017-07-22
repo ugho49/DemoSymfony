@@ -20,4 +20,5 @@ php app/console doctrine:fixtures:load
 - [ ] Delete comment
 - [ ] Send Email for actions
 - [ ] User profile picture (table file reusable)
-- [ ] Auto generate password in user creation admin
+- [x] Auto generate password in user creation admin
+- [ ] Complexe password required when change

@@ -75,8 +75,9 @@ class SecurityController extends Controller
             $passwordEncoder = $this->get('security.password_encoder');
             $newPasswordPlain = $this->get("string.generator")->generateRandomString(15);
 
-            $dateValidUntil = new DateTime('now');
+            $dateValidUntil = new DateTime();
             $dateValidUntil->add(new DateInterval('PT2H'));
+            // Password valid for 2 hours
             $user->setPasswordValidUntil($dateValidUntil);
             $user->setPassword($passwordEncoder->encodePassword($user, $newPasswordPlain));
             $em->flush();

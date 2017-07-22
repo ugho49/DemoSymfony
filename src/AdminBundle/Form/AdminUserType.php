@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractUserType extends AbstractType
+class AdminUserType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -78,6 +78,5 @@ abstract class AbstractUserType extends AbstractType
             'current_user' => null
         ));
     }
-
 
 }
