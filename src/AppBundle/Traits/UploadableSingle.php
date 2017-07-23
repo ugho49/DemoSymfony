@@ -9,8 +9,8 @@
 namespace AppBundle\Traits;
 
 use AppBundle\Entity\File;
-use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**

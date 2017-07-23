@@ -8,7 +8,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\File;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserChangePasswordType;
 use AppBundle\Form\UserType;
@@ -82,6 +81,12 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            // Remove old file if upload new file
+            if ($editForm->get("uploadedFile")->getData() && $user->getFile()) {
+                $em->remove($user->getFile());
+            }
+
             $em->flush();
 
             $request->getSession()
