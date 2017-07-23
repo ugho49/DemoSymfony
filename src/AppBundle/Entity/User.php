@@ -3,13 +3,11 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Traits\Timestampable;
-use AppBundle\Traits\UploadableSingle;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, AdvancedUserInterface, Serializable
 {
 
-    use Timestampable, UploadableSingle;
+    use Timestampable;
 
     /**
      * @var int
@@ -98,13 +96,13 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
      */
     private $passwordValidUntil;
 
-    /**
-     * @var UploadedFile
-     * @Assert\Image(minHeight="100", minWidth="100")
-     *
-     * @Serializer\Exclude()
-     */
-    protected $uploadedFile;
+    // /**
+    //  * @var UploadedFile
+    //  * @Assert\Image(minHeight="100", minWidth="100")
+    //  *
+    //  * @Serializer\Exclude()
+    //  */
+    // protected $uploadedFile;
 
     /**
      * Get id

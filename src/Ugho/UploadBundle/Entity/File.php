@@ -6,7 +6,7 @@
  * Time: 11:46
  */
 
-namespace AppBundle\Entity;
+namespace Ugho\UploadBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * File
  *
  * @ORM\Table(name="files")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FileRepository")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
 class File

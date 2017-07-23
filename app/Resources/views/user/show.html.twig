@@ -31,12 +31,15 @@
         </tr>
         </tbody>
     </table>
-    
+
+    {#
     {% if user.file %}
         <img src="{{ user.file.webPath }}" alt="profile picture" class="img-responsive user-photo">
     {% else %}
         <img src="{{ asset('assets/img/avatar_2x.png') }}" alt="profile picture" class="img-responsive user-photo">
     {% endif %}
+    #}
+
 
     <div class="row text-center">
         <a href="{{ path('user_profile_change-password') }}" class="btn btn-warning">
