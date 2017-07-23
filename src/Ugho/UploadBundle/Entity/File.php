@@ -205,7 +205,7 @@ class File
     /**
      * @ORM\PreRemove()
      */
-    public function removeImage() {
+    /*public function removeImage() {
         unlink($this->absolutePath . $this->name);
-    }
+    }*/
 }

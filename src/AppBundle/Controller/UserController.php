@@ -77,15 +77,17 @@ class UserController extends Controller
         $repo = $em->getRepository(User::class);
         $user = $repo->find($currentUser->getId());
 
+        //dump($this->get("upload.annotation_reader")->getUploadableFields($user));
+
         $editForm = $this->createForm(UserType::class, $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             // Remove old file if upload new file
-            if ($editForm->get("uploadedFile")->getData() && $user->getFile()) {
+            /*if ($editForm->get("uploadedFile")->getData() && $user->getFile()) {
                 $em->remove($user->getFile());
-            }
+            }*/
 
             $em->flush();
 

@@ -8,14 +8,19 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ugho\UploadBundle\Annotation\Uploadable;
+use Ugho\UploadBundle\Annotation\UploadableField;
+use Ugho\UploadBundle\Entity\File;
 
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity("email")
+ * @Uploadable
  * @ORM\HasLifecycleCallbacks
  */
 class User implements UserInterface, AdvancedUserInterface, Serializable
@@ -78,6 +83,8 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
     private $roles = [];
 
     /**
+     * @Assert\LessThanOrEqual("today")
+     *
      * @ORM\Column(type="date", nullable=true)
      */
     private $birthday;
@@ -96,13 +103,22 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
      */
     private $passwordValidUntil;
 
-    // /**
-    //  * @var UploadedFile
-    //  * @Assert\Image(minHeight="100", minWidth="100")
-    //  *
-    //  * @Serializer\Exclude()
-    //  */
-    // protected $uploadedFile;
+    /**
+     * @var File
+     *
+     * @ORM\ManyToOne(targetEntity="Ugho\UploadBundle\Entity\File", cascade={"persist"})
+     * @ORM\JoinColumn(name="picture_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $profilePicture;
+
+    /**
+     * @var UploadedFile
+     * @Assert\Image(minHeight="100", minWidth="100")
+     * @UploadableField(fileProperty="profilePicture")
+     *
+     * @Serializer\Exclude()
+     */
+    private $uploadedFile = null;
 
     /**
      * Get id
@@ -308,6 +324,40 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
         return $this->passwordValidUntil;
     }
 
+    /**
+     * @return File
+     */
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * @param File $profilePicture
+     * @return User
+     */
+    public function setProfilePicture($profilePicture)
+    {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getUploadedFile()
+    {
+        return $this->uploadedFile;
+    }
+
+    /**
+     * @param UploadedFile $uploadedFile|null
+     */
+    public function setUploadedFile(UploadedFile $uploadedFile)
+    {
+        $this->uploadedFile = $uploadedFile;
+    }
+
     //Override methods :
 
     public function getUsername()
@@ -354,12 +404,6 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
         return $this->enabled;
     }
 
-    /**
-     * String representation of object
-     * @link http://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
-     */
     public function serialize()
     {
         return serialize(array(
@@ -372,15 +416,6 @@ class User implements UserInterface, AdvancedUserInterface, Serializable
         ));
     }
 
-    /**
-     * Constructs the object
-     * @link http://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
-     * @since 5.1.0
-     */
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);

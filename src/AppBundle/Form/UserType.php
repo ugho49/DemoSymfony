@@ -47,6 +47,9 @@ class UserType extends AbstractType
                 'attr' => array(
                     "class" => "date-advanced"
                 )
+            ))->add('uploadedFile', FileType::class, array(
+                'required' => false,
+                "label" => "Profile picture"
             ));
     }
 

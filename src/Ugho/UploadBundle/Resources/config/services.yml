@@ -1,4 +1,16 @@
 services:
-#    upload.example:
-#        class: Ugho\UploadBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    upload.annotation_reader:
+        class: Ugho\UploadBundle\Reader\UploadAnnotationReader
+        arguments: ["@annotations.reader"]
+
+    upload.handler:
+        class: Ugho\UploadBundle\Handler\UploadHandler
+        arguments: ["%kernel.root_dir%"]
+
+    upload.subscriber:
+        class: Ugho\UploadBundle\Listener\UploadSubscriber
+        arguments: ["@upload.annotation_reader", "@upload.handler"]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+
