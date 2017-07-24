@@ -105,7 +105,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing user entity.
      *
-     * @Route("/change-password", name="user_profile_change-password")
+     * @Route("/change-password", name="user_profile_change_password")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return RedirectResponse|Response

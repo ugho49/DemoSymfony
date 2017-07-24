@@ -6,7 +6,7 @@
 <div class="row comment-card">
     <div class="hidden-xs col-sm-1 col-sm-offset-{{ level }}">
         <div class="thumbnail">
-            {% if comment.user.file %}
+            {% if comment.user and comment.user.file %}
                 <img class="img-responsive comment-user-photo" src="{{ comment.user.file.webPath }}" alt="profile picture">
             {% else %}
                 <img class="img-responsive comment-user-photo" src="{{ asset('assets/img/avatar_2x.png') }}" alt="profile picture">

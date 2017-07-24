@@ -3,7 +3,7 @@
         You have to change your password as soon as possible<br>
         Otherwise your account will be inactive on <strong>{{ app.user.passwordValidUntil|date('Y-m-d \\a\\t H:i') }}</strong>
         <br>
-        <a href="{{ path('user_profile_change-password') }}" class="alert-link">Change my password here</a>
+        <a href="{{ path('user_profile_change_password') }}" class="alert-link">Change my password here</a>
     </div>
 {% endif %}
 
