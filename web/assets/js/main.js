@@ -23,8 +23,11 @@
     };
 
     const dateTimePickerEvent = function () {
-        $('.date-advanced').datetimepicker({
-            format: 'YYYY-MM-DD'
+        $('.date-advanced').each(function () {
+            $(this).datetimepicker({
+                showClear: true,
+                format: 'YYYY-MM-DD'
+            });
         });
     };
 

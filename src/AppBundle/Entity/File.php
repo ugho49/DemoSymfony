@@ -206,6 +206,10 @@ class File
      * @ORM\PreRemove()
      */
     public function removeImage() {
-        unlink($this->absolutePath . $this->name);
+        $filename = $this->absolutePath . $this->name;
+
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
 }

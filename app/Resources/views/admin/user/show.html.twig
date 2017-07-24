@@ -24,10 +24,6 @@
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <th>Enabled</th>
-                <td>{% if user.enabled %}Yes{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
                 <th>Roles</th>
                 <td>
                     {% for role in user.roles %}
@@ -54,6 +50,14 @@
         </tbody>
     </table>
 
+    {% if user.file %}
+        <img src="{{ user.file.webPath }}" alt="profile picture" class="img-responsive user-photo">
+    {% else %}
+        <img src="{{ asset('assets/img/avatar_2x.png') }}" alt="profile picture" class="img-responsive user-photo">
+    {% endif %}
+
+    <br>
+
     {% set canEdit = not user.hasRole("ROLE_SUPERADMIN") and user.id != app.user.id %}
 
     <div class="row">
@@ -63,7 +67,7 @@
                 Back to the list
             </a>
 
-            {% if canEdit %}
+            {% if canEdit and user.enabled %}
                 <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">
                     <i class="fa fa-pencil fa-align-left"></i>
                     Edit
@@ -73,29 +77,39 @@
 
         {% if canEdit %}
             <div class="col-md-6 text-right">
-                <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">
-                    <i class="fa fa-trash-o"></i>
-                    delete
+                <button class="btn btn-{% if user.enabled %}danger{% else %}success{% endif %}" data-toggle="modal" data-target="#modalEnableDisable">
+                    {% if user.enabled %}
+                        <i class="fa fa-ban"></i>
+                        Disabled
+                    {% else %}
+                        <i class="fa fa-plus-square-o"></i>
+                        Enabled
+                    {% endif %}
                 </button>
             </div>
 
-            <div class="modal fade modal-danger" role="dialog" id="modalDelete">
+            <div class="modal fade modal-{% if user.enabled %}danger{% else %}success{% endif %}" role="dialog" id="modalEnableDisable">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Delete</h4>
+                            <h4 class="modal-title">{% if user.enabled %}Disabled{% else %}Enabled{% endif %} User</h4>
                         </div>
                         <div class="modal-body">
                             <p>Are you sure ?</p>
                         </div>
                         <div class="modal-footer">
-                            {{ form_start(delete_form) }}
-                            <button class="btn btn-danger" type="submit">
-                                <i class="fa fa-trash-o"></i>
-                                delete
+                            {{ form_start(enable_disable_form) }}
+                            <button class="btn btn-{% if user.enabled %}danger{% else %}success{% endif %}" type="submit">
+                                {% if user.enabled %}
+                                    <i class="fa fa-ban"></i>
+                                    Disabled
+                                {% else %}
+                                    <i class="fa fa-plus-square-o"></i>
+                                    Enabled
+                                {% endif %}
                             </button>
-                            {{ form_end(delete_form) }}
+                            {{ form_end(enable_disable_form) }}
                         </div>
                     </div>
                 </div>

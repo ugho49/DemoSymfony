@@ -108,11 +108,11 @@ class AdminUserController extends Controller
      */
     public function showAction(User $user)
     {
-        $deleteForm = $this->createDeleteForm($user);
+        $deleteForm = $this->createEnableDisableForm($user);
 
         return $this->render('admin/user/show.html.twig', array(
             'user' => $user,
-            'delete_form' => $deleteForm->createView(),
+            'enable_disable_form' => $deleteForm->createView(),
         ));
     }
 
@@ -159,50 +159,54 @@ class AdminUserController extends Controller
     /**
      * Deletes a user entity.
      *
-     * @Route("/{id}", name="admin_user_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/enable-disable", name="admin_user_enable_disable")
+     * @Method("PUT")
      * @param Request $request
      * @param User $user
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, User $user)
+    public function enableDisableAction(Request $request, User $user)
     {
         /** @var User $currentUser */
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
-        // Can't remove a superadmin or remove yourselft
+        // Can't update a superadmin or update yourselft
         if ($user->hasRole(RolesEnum::ROLE_SUPERADMIN) || $user->getId() == $currentUser->getId()) {
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createDeleteForm($user);
+        $form = $this->createEnableDisableForm($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
+
+            $user->setEnabled(!$user->isEnabled());
+
             $em->flush();
+
+            $text = $user->isEnabled() ? "enabled" : "disabled";
 
             $request->getSession()
                 ->getFlashBag()
-                ->add('info', 'The user has been successfully deleted');
+                ->add('info', 'The user has been successfully ' . $text);
         }
 
-        return $this->redirectToRoute('admin_user_index');
+        return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
     }
 
     /**
-     * Creates a form to delete a user entity.
+     * Creates a form to Enable Or Disable a user entity.
      *
      * @param User $user The user entity
      *
      * @return Form The form
      */
-    private function createDeleteForm(User $user)
+    private function createEnableDisableForm(User $user)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_user_delete', array('id' => $user->getId())))
-            ->setMethod('DELETE')
+            ->setAction($this->generateUrl('admin_user_enable_disable', array('id' => $user->getId())))
+            ->setMethod('PUT')
             ->getForm()
         ;
     }

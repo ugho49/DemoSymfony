@@ -100,7 +100,7 @@ trait UploadableSingle
      * @return string
      */
     protected function getUploadRootDir(): string {
-        return "/uploads/" . date("Ymd") . "/";
+        return "/uploads/";
     }
 
     /**
