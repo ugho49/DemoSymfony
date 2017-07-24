@@ -77,7 +77,7 @@ class PostController extends Controller
                 ->getFlashBag()
                 ->add('success', 'The post has been successfully created');
 
-            return $this->redirectToRoute('post_show', array('id' => $post->getId()));
+            return $this->redirectToRoute('post_show', array('slug' => $post->getSlug()));
         }
 
         return $this->render('post/new.html.twig', array(
@@ -143,7 +143,7 @@ class PostController extends Controller
                 ->getFlashBag()
                 ->add('info', 'The post has been successfully updated');
 
-            return $this->redirectToRoute('post_show', array('id' => $post->getId()));
+            return $this->redirectToRoute('post_show', array('slug' => $post->getSlug()));
         }
 
         return $this->render('post/edit.html.twig', array(
@@ -184,11 +184,9 @@ class PostController extends Controller
             $request->getSession()
                 ->getFlashBag()
                 ->add('success', 'The comment has been successfully added');
-
-            return $this->redirectToRoute('post_show', array('id' => $post->getId()));
         }
 
-        return $this->redirectToRoute('post_show', array('id' => $post->getId()));
+        return $this->redirectToRoute('post_show', array('slug' => $post->getSlug()));
     }
 
     /**
@@ -205,7 +203,7 @@ class PostController extends Controller
     {
         $form = $this->createDeleteCommentForm($comment->getId());
         $form->handleRequest($request);
-        $post_id = $comment->getPost()->getId();
+        $post_slug = $comment->getPost()->getSlug();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -217,7 +215,7 @@ class PostController extends Controller
                 ->add('info', 'The comment has been successfully deleted');
         }
 
-        return $this->redirectToRoute('post_show', array('id' => $post_id));
+        return $this->redirectToRoute('post_show', array('slug' => $post_slug));
     }
 
     /**
