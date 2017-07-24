@@ -22,7 +22,7 @@
                         </a>
                     {% endif %}
 
-                    <a href="{{ path('post_show', { 'id': post.id }) }}">
+                    <a href="{{ path('post_show', { 'slug': post.slug }) }}">
                         <div class="panel-body text-justify">
                             <h3>{{ post.name|truncate(20, true)|raw }}</h3>
                             <p>{{ post.content|truncate(400, true)|raw }}</p>
