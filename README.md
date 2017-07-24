@@ -15,12 +15,12 @@ php app/console doctrine:fixtures:load
 
 ## TODO
 
-- [ ] Design post show
-- [ ] post slug
-- [ ] Delete comment
+- [x] Design post show
+- [x] post slug
+- [x] Delete comment
 - [x] Change Delete categorie
 - [ ] Send Email for actions
 - [x] User profile picture (table file reusable)
-- [ ] Manage profile pictures
+- [x] Manage profile pictures
 - [x] Auto generate password in user creation admin
 - [x] Complexe password required when change

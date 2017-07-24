@@ -1,45 +1,44 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Post</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ post.name }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ post.content }}</td>
-            </tr>
-            <tr>
-                <th>Categories</th>
-                <td>
-                    {% for category in post.categories %}
-                        <span class="label label-default">{{ category.name }}</span>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <th>Createdby</th>
-                <td>{{ post.user.fullname }}</td>
-            </tr>
-            <tr>
-                <th>Createdat</th>
-                <td>{% if post.createdAt %}{{ post.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updatedat</th>
-                <td>{% if post.updatedAt %}{{ post.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>{{ post.name }}</h1>
+
+                <div class="row">
+                    <div class="col-xs-6 text-left">
+                        <small>Created by {{ post.user.firstname }} - <span class="timeago" data-time="{{ post.createdAt|date('Y-m-d H:i:s') }}"></span></small>
+                        {% if post.updatedAt %}
+                            <br>
+                            <small>Updated <span class="timeago" data-time="{{ post.updatedAt|date('Y-m-d H:i:s') }}"></span></small>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-xs-6 text-right">
+                        <p>
+                            {% for category in post.categories %}
+                                <a href="{{ path('post_index', {"category_id" : category.id}) }}">
+                                    <span class="label label-default">{{ category.name }}</span>
+                                </a>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-justify">{{ post.content|nl2br }}</p>
+
+        </div>
+    </div>
+
+    <hr>
 
     {% set canEdit = app.user and app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
 
     <div class="row">
-        <div class="col-md-6 text-left">
+        <div class="col-xs-6 text-left">
             <a href="{{ path('post_index') }}" class="btn btn-default">
                 <i class="fa fa-angle-left fa-align-left"></i>
                 Back to the list
@@ -54,7 +53,7 @@
         </div>
 
         {% if canEdit %}
-            <div class="col-md-6 text-right">
+            <div class="col-xs-6 text-right">
                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">
                     <i class="fa fa-trash-o"></i>
                     delete
