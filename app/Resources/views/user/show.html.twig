@@ -1,57 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>My Profile</h1>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Firstname</th>
-            <td>{{ user.firstname }}</td>
-        </tr>
-        <tr>
-            <th>Lastname</th>
-            <td>{{ user.lastname }}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ user.email }}</td>
-        </tr>
-        <tr>
-            <th>Birthday</th>
-            <td>{% if user.birthday %}{{ user.birthday|date('Y-m-d') }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Createdat</th>
-            <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Updatedat</th>
-            <td>{% if user.updatedAt %}{{ user.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        </tr>
-        </tbody>
-    </table>
-    
-    {% if user.file %}
-        <img src="{{ user.file.webPath }}" alt="profile picture" class="img-responsive user-photo">
-    {% else %}
-        <img src="{{ asset('assets/img/avatar_2x.png') }}" alt="profile picture" class="img-responsive user-photo">
-    {% endif %}
+    <br>
+    <br>
 
-    <div class="row text-center">
-        {% if user.file %}
-            <button class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteProfilePicture">
-                <i class="fa fa-trash-o"></i>&nbsp;Delete profile picture
-            </button>
-        {% endif %}
-        <a href="{{ path('user_profile_change_password') }}" class="btn btn-warning">
-            <i class="fa fa-unlock-alt fa-align-left"></i>
-            Change password
-        </a>
-        <a href="{{ path('user_profile_edit') }}" class="btn btn-primary">
-            <i class="fa fa-pencil fa-align-left"></i>
-            Edit profile
-        </a>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 profile-card text-center">
+            {% if user.file %}
+                <img src="{{ user.file.webPath }}" alt="profile picture" class="img-responsive user-photo">
+            {% else %}
+                <img src="{{ asset('assets/img/avatar_2x.png') }}" alt="profile picture" class="img-responsive user-photo">
+            {% endif %}
+
+            <h3><b>{{ user.fullname }}</b></h3>
+            <hr>
+            <h4>{{ user.email }}</h4>
+            <hr>
+            <h5>{{ user.birthday|date('Y-m-d') }}</h5>
+
+            {% if user.file %}
+                <hr>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteProfilePicture">
+                    <i class="fa fa-trash-o"></i>&nbsp;Delete profile picture
+                </button>
+            {% endif %}
+
+            <hr>
+
+            <a href="{{ path('user_profile_change_password') }}" class="btn btn-warning">
+                <i class="fa fa-unlock-alt fa-align-left"></i>
+                Change password
+            </a>
+
+            <hr>
+
+            <a href="{{ path('user_profile_edit') }}" class="btn btn-primary">
+                <i class="fa fa-pencil fa-align-left"></i>
+                Edit profile
+            </a>
+        </div>
     </div>
 
     {% if user.file %}
