@@ -9,6 +9,9 @@
 namespace AppBundle\Traits;
 
 use AppBundle\Entity\File;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -37,23 +40,52 @@ trait UploadableSingle
 
     /**
      * @ORM\PreFlush()
+     * @param PreFlushEventArgs $eventArgs
      */
-    public function upload()
+    public function _PreFlush(PreFlushEventArgs $eventArgs)
     {
         if ($this->uploadedFile) {
-            $name = sha1(uniqid(mt_rand(), true)) . '.' . $this->uploadedFile->getClientOriginalExtension();
+            $this->removeFile($eventArgs->getEntityManager());
+            $this->uploadFile();
+        }
+    }
 
-            $file = new File();
-            $file->setWebPath($this->getUploadRootDir() . $name);
-            $file->setSize($this->uploadedFile->getClientSize());
-            $file->setName($name);
-            $file->setExtension($this->uploadedFile->getClientOriginalExtension());
-            $absoluteDir = $this->getWebDir() . $this->getUploadRootDir();
-            $file->setAbsolutePath($absoluteDir);
-            $this->uploadedFile->move($absoluteDir, $name);
+    /**
+     * @ORM\PreRemove()
+     * @param LifecycleEventArgs $eventArgs
+     */
+    public function _PreRemove(LifecycleEventArgs $eventArgs) {
+        $this->removeFile($eventArgs->getEntityManager());
+    }
 
-            $this->setUploadedFile(null);
-            $this->setFile($file);
+    /**
+     * Upload File
+     */
+    private function uploadFile() {
+        $name = sha1(uniqid(mt_rand(), true)) . '.' . $this->uploadedFile->getClientOriginalExtension();
+
+        $file = new File();
+        $file->setWebPath($this->getUploadRootDir() . $name);
+        $file->setSize($this->uploadedFile->getClientSize());
+        $file->setName($name);
+        $file->setExtension(strtoupper($this->uploadedFile->getClientOriginalExtension()));
+        $absoluteDir = $this->getWebDir() . $this->getUploadRootDir();
+        // For windows servers
+        $absoluteDir = str_replace("/", DIRECTORY_SEPARATOR, $absoluteDir);
+        $file->setAbsolutePath($absoluteDir);
+        $this->uploadedFile->move($absoluteDir, $name);
+        $this->setUploadedFile(null);
+        $this->setFile($file);
+    }
+
+    /**
+     * Remove file if exist
+     *
+     * @param EntityManager $em
+     */
+    private function removeFile(EntityManager $em) {
+        if ($this->file !== null) {
+            $em->remove($this->file);
         }
     }
 

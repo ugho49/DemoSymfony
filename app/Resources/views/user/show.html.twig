@@ -39,6 +39,11 @@
     {% endif %}
 
     <div class="row text-center">
+        {% if user.file %}
+            <button class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteProfilePicture">
+                <i class="fa fa-trash-o"></i>&nbsp;Delete profile picture
+            </button>
+        {% endif %}
         <a href="{{ path('user_profile_change_password') }}" class="btn btn-warning">
             <i class="fa fa-unlock-alt fa-align-left"></i>
             Change password
@@ -48,4 +53,29 @@
             Edit profile
         </a>
     </div>
+
+    {% if user.file %}
+        <div class="modal fade modal-danger" role="dialog" id="modalDeleteProfilePicture">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Delete profile picture</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to delete this image ?</p>
+                        <img src="{{ user.file.webPath }}" alt="profile picture" class="img-responsive user-photo">
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_start(delete_comment_form) }}
+                        <button class="btn btn-danger" type="submit">
+                            <i class="fa fa-trash-o"></i>
+                            delete
+                        </button>
+                        {{ form_end(delete_comment_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

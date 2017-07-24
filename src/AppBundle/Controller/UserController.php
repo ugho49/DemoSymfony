@@ -14,6 +14,7 @@ use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,24 +40,11 @@ class UserController extends Controller
         /** @var User $currentUser */
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        //TODO : begin remove
-
-        /*$em   = $this->getDoctrine()->getManager();
-        $userRepo = $em->getRepository(User::class);
-        $currentUserInBase = $userRepo->find($user->getId());
-
-        if ($currentUserInBase->getFile()) {
-
-            //$currentUserInBase->setFile(null);
-            $em->remove($currentUserInBase->getFile());
-        }
-
-        $em->flush();*/
-
-        // TODO: end remove
+        $deleteCommentForm = $this->createDeleteProfilePictureForm();
 
         return $this->render('user/show.html.twig', array(
             'user' => $user,
+            "delete_comment_form" => $deleteCommentForm->createView()
         ));
     }
 
@@ -81,11 +69,6 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
-            // Remove old file if upload new file
-            if ($editForm->get("uploadedFile")->getData() && $user->getFile()) {
-                $em->remove($user->getFile());
-            }
 
             $em->flush();
 
@@ -156,5 +139,45 @@ class UserController extends Controller
         return $this->render('user/change-password.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Delete profile picture to an existing user entity.
+     *
+     * @Route("/delete-profile-picture", name="user_delete_profile_picture")
+     * @Method({"DELETE"})
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function deleteProfilePictureAction(Request $request)
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        $em   = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(User::class);
+        $user = $repo->find($currentUser->getId());
+
+        $em->remove($user->getFile());
+        $em->flush();
+
+        $request->getSession()
+            ->getFlashBag()
+            ->add('info', 'The picture has been successfully deleted');
+
+        return $this->redirectToRoute('user_profile');
+    }
+
+    /**
+     * Creates a form to delete a post entity.
+     *
+     * @return Form The form
+     */
+    private function createDeleteProfilePictureForm()
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('user_delete_profile_picture'))
+            ->setMethod('DELETE')
+            ->getForm();
     }
 }
