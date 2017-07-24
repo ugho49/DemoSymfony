@@ -89,12 +89,12 @@
     border-radius: 0;
 }
 
-.my-card-small > .panel-body {
-    height: 50px;
+.my-card-small .panel-body {
+    height: 50px !important;
 }
 
-.my-card > .panel-body {
-    height: 300px;
+.my-card .panel-body {
+    height: 260px;
 }
 
 .btn-border-left {
@@ -110,7 +110,7 @@
     color: inherit;
 }
 
-.my-card > .panel-footer {
+.my-card .panel-footer {
     color: #337ab7;
 }
 
@@ -122,14 +122,14 @@
     font-family: "Lato-Light", sans-serif !important;
 }
 
-.my-card > .edit-button {
+.my-card .edit-button {
     position: absolute;
     top: 0;
     right: 15px;
     border-radius: 0;
 }
 
-.my-card > .my-card-footer-small {
+.my-card .my-card-footer-small {
     padding: 0 15px;
 }
 
