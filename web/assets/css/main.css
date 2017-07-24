@@ -1,6 +1,16 @@
 @font-face {
-    font-family: 'Lato';
+    font-family: 'Lato-Light';
     src: url('../fonts/Lato/Lato-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Lato-Regular';
+    src: url('../fonts/Lato/Lato-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Lato-Bold';
+    src: url('../fonts/Lato/Lato-Bold.ttf');
 }
 
 .btn {
@@ -104,6 +114,14 @@
     color: #337ab7;
 }
 
+.my-card .card-post-title {
+    font-family: "Lato-Bold", sans-serif !important;
+}
+
+.my-card .card-post-content {
+    font-family: "Lato-Light", sans-serif !important;
+}
+
 .my-card > .edit-button {
     position: absolute;
     top: 0;
@@ -180,7 +198,7 @@
 
 .profile-card {
     background-color: rgba(245, 245, 245, 0.56);;
-    font-family: 'Lato', sans-serif !important;
+    font-family: 'Lato-Light', sans-serif !important;
     text-transform: uppercase !important;
     padding-top: 60px;
     padding-bottom: 20px;
@@ -196,6 +214,18 @@
 }
 
 .profile-card .btn {
-    font-family: 'Lato', sans-serif !important;
+    font-family: 'Lato-Light', sans-serif !important;
     text-transform: uppercase !important;
+}
+
+.post-title, .comment-title {
+    font-family: "Lato-Bold", sans-serif !important;
+}
+
+.post-content, .comment-content {
+    font-family: "Lato-Light", sans-serif !important;
+}
+
+.post-subtitle, .comment-subtitle {
+    font-family: "Lato-Regular", sans-serif !important;
 }
