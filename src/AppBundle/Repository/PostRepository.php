@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,7 +13,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-    public function findByCategory($category)
+    /**
+     * @param Category $category
+     * @return array
+     */
+    public function findByCategory(Category $category)
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin("p.categories", "c")

@@ -11,7 +11,7 @@
 
     <hr>
 
-    <table class="table table-striped">
+    <table class="table table-striped datatable">
         <thead>
             <tr>
                 <th>Firstname</th>
@@ -21,7 +21,8 @@
                 <th>Enabled</th>
                 <th>Roles</th>
                 <th>Createdat</th>
-                <th colspan="2">Actions</th>
+                <th class="no-sort"></th>
+                <th class="no-sort"></th>
             </tr>
         </thead>
         <tbody>
@@ -63,4 +64,17 @@
         </tbody>
     </table>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.datatable').dataTable({
+                paging: false,
+                columnDefs: [
+                    { targets: 'no-sort', orderable: false }
+                ]
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% if app.user  %}
+    {% if app.user and not category %}
         <div class="row text-center">
             <a href="{{ path('post_new') }}" class="btn btn-success">
                 Create a new post
@@ -10,6 +10,17 @@
         </div>
 
         <hr>
+    {% endif %}
+
+    {% if category %}
+        <div class="row text-center">
+            <h2 class="page-header">Posts for category :
+                <small>{{ category.name }}</small>
+            </h2>
+            <a href="{{ path('post_index') }}" class="btn btn-default">Remove filter</a>
+        </div>
+
+        <br>
     {% endif %}
 
     <div class="row">

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Post;
 use AppBundle\Entity\User;
@@ -34,17 +35,21 @@ class PostController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Post::class);
+        $postRepo = $em->getRepository(Post::class);
         $categoryId = $request->get("category_id");
+        $category = null;
 
         if ($categoryId) {
-            $posts = $repo->findByCategory($categoryId);
+            $categoryRepo = $em->getRepository(Category::class);
+            $category = $categoryRepo->find($categoryId);
+            $posts = $postRepo->findByCategory($category);
         } else {
-            $posts = $repo->findAll();
+            $posts = $postRepo->findAll();
         }
 
         return $this->render('post/index.html.twig', array(
-            'posts' => $posts
+            'posts' => $posts,
+            'category' => $category
         ));
     }
 

@@ -222,6 +222,10 @@
     font-family: "Lato-Bold", sans-serif !important;
 }
 
+.post-subtitle a:hover {
+    text-decoration: none;
+}
+
 .post-content, .comment-content {
     font-family: "Lato-Light", sans-serif !important;
 }
