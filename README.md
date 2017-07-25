@@ -3,7 +3,7 @@ Demo of Symfony
 
 ## Version
 
-Symfony 2.8.25
+Symfony 3.3.5
 
 ## Description
 
