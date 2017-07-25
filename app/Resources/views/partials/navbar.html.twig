@@ -1,0 +1,48 @@
+{% set route = app.request.attributes.get('_route') %}
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path("homepage") }}">MyDemoBlog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="{% if route starts with 'post' %}active{% endif %}"><a href="{{ path("post_index") }}">Posts</a></li>
+                <li class="{% if route starts with 'category' %}active{% endif %}"><a href="{{ path("category_index") }}">Categories</a></li>
+
+                {% if is_granted("ROLE_ADMIN") %}
+                    <li class="dropdown {% if route starts with 'admin' %}active{% endif %}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('admin_user_index') }}">Users</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if app.user %}
+                    <li class="dropdown {% if route starts with 'user' %}active{% endif %}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.firstname | title }} {{ app.user.lastname | upper }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('user_profile') }}">My profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ path('logout') }}">Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{{ path("login") }}">Log In</a></li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

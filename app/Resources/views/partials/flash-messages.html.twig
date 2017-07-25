@@ -1,0 +1,17 @@
+{% if app.user and app.user.passwordValidUntil %}
+    <div class="alert alert-warning" role="alert">
+        You have to change your password as soon as possible<br>
+        Otherwise your account will be inactive on <strong>{{ app.user.passwordValidUntil|date('Y-m-d \\a\\t H:i') }}</strong>
+        <br>
+        <a href="{{ path('user_profile_change_password') }}" class="alert-link">Change my password here</a>
+    </div>
+{% endif %}
+
+{% for type, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+        <div class="alert alert-{{type}} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{message}}
+        </div>
+    {% endfor %}
+{% endfor %}

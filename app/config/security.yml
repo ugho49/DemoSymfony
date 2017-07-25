@@ -1,11 +1,18 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
             memory: ~
+
+        db_provider:
+            entity:
+                class: AppBundle:User
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,10 +22,35 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+            http_basic: ~
+
+            provider: db_provider
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            form_login:
+                login_path: /login
+                check_path: /login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: /
+                success_handler: security.login.success.handler
+
+            logout:
+                invalidate_session: true
+                path:   /logout
+                target: /
+                handlers: [security.logout.handler]
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/post, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/category, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user-profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_EDITOR:     [ROLE_USER]
+        ROLE_ADMIN:      [ROLE_EDITOR]
+        ROLE_SUPERADMIN: [ROLE_ADMIN]

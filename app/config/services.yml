@@ -33,3 +33,22 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
+    mail.service:
+        class: AppBundle\Service\MailService
+        arguments: ['@mailer', '%mailer_default_from%']
+
+    security.login.success.handler:
+        class: AppBundle\Handler\LoginSuccessHandler
+        arguments: ["@security.http_utils", "@doctrine.orm.entity_manager"]
+
+    security.logout.handler:
+        class: AppBundle\Handler\LogoutHandler
+
+    string.generator:
+        class: AppBundle\Service\StringGenerator

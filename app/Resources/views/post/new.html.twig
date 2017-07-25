@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Post creation</h1>
+
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 text-left">
+                <a href="{{ path('post_index') }}" class="btn btn-default">
+                    <i class="fa fa-angle-left fa-align-left"></i>
+                    Back to the list
+                </a>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-success">
+                    <i class="fa fa-floppy-o fa-align-left"></i>
+                    Create
+                </button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

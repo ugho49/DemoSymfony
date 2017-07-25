@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1 class="post-title">{{ post.name }}</h1>
+
+                <div class="row post-subtitle">
+                    <div class="col-xs-6 text-left">
+                        <small>Created by {{ post.user.firstname }} - <span class="timeago" data-time="{{ post.createdAt|date('Y-m-d H:i:s') }}"></span></small>
+                        {% if post.updatedAt %}
+                            <br>
+                            <small>Updated <span class="timeago" data-time="{{ post.updatedAt|date('Y-m-d H:i:s') }}"></span></small>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-xs-6 text-right">
+                        <p>
+                            {% for category in post.categories %}
+                                <a href="{{ path('post_index', {"category_id" : category.id}) }}">
+                                    <span class="label label-default">{{ category.name }}</span>
+                                </a>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-justify post-content">{{ post.content|nl2br }}</p>
+
+        </div>
+    </div>
+
+    <hr>
+
+    {% set canEdit = app.user and app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
+
+    <div class="row">
+        <div class="col-xs-6 text-left">
+            <a href="{{ path('post_index') }}" class="btn btn-default">
+                <i class="fa fa-angle-left fa-align-left"></i>
+                Back to the list
+            </a>
+
+            {% if canEdit %}
+                <a href="{{ path('post_edit', { 'id': post.id }) }}" class="btn btn-primary">
+                    <i class="fa fa-pencil fa-align-left"></i>
+                    Edit
+                </a>
+            {% endif %}
+        </div>
+
+        {% if canEdit %}
+            <div class="col-xs-6 text-right">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">
+                    <i class="fa fa-trash-o"></i>
+                    delete
+                </button>
+            </div>
+
+            <div class="modal fade modal-danger" role="dialog" id="modalDelete">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Delete Post</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            {{ form_start(delete_form) }}
+                            <button class="btn btn-danger" type="submit">
+                                <i class="fa fa-trash-o"></i>
+                                delete
+                            </button>
+                            {{ form_end(delete_form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button class="btn btn-primary btn-lg addComment" data-toggle="modal" data-target="#modalAddComment" data-parent-id="">Add a comment</button>
+        </div>
+
+        <div class="modal fade modal-info" role="dialog" id="modalAddComment">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add a comment</h4>
+                    </div>
+
+                    {{ form_start(comment_form, {'action': path('post_new_comment', {'id': post.id})}) }}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_widget(comment_form) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary">Add comment</button>
+                    </div>
+                    {{ form_end(comment_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div id="comments">
+        {% for comment in comments %}
+            {% include ':post/partials:_comment.html.twig' with {"comment": comment} %}
+        {% endfor %}
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="modal fade modal-danger" role="dialog" id="modalDeleteComment">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Delete comment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_start(delete_comment_form, {'action':''}) }}
+                        <button class="btn btn-danger" type="submit">
+                            <i class="fa fa-trash-o"></i>
+                            delete
+                        </button>
+                        {{ form_end(delete_comment_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.addComment').click(function () {
+                var parentId = $(this).data('parent-id');
+                $("#comment_parent").val(parentId);
+            });
+
+            $('.deleteComment').click(function () {
+                var deleteLink = $(this).data('delete-link');
+                $("#modalDeleteComment form").attr('action', deleteLink);
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row text-center">
+        <a href="{{ path('admin_user_new') }}" class="btn btn-success">
+            Create a new user
+            <i class="fa fa-plus fa-align-right"></i>
+        </a>
+    </div>
+
+    <hr>
+
+    <table class="table table-striped datatable">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Birthday</th>
+                <th>Enabled</th>
+                <th>Roles</th>
+                <th>Createdat</th>
+                <th class="no-sort"></th>
+                <th class="no-sort"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% if user.birthday %}{{ user.birthday|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    {% if user.enabled %}
+                        <span class="label label-success">Yes</span>
+                    {% else %}
+                        <span class="label label-danger">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for role in user.roles %}
+                        <span class="label label-default">{{ role }}</span>
+                    {% endfor %}
+                </td>
+                <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i') }}{% endif %}</td>
+                <td>
+                    {% if not user.hasRole("ROLE_SUPERADMIN") and user.id != app.user.id and user.enabled %}
+                        <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary">
+                            <i class="fa fa-pencil fa-align-left"></i>
+                            edit
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-default">
+                        <i class="fa fa-eye fa-align-left"></i>
+                        show
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.datatable').dataTable({
+                paging: false,
+                columnDefs: [
+                    { targets: 'no-sort', orderable: false }
+                ]
+            });
+        });
+    </script>
+{% endblock %}
