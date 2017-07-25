@@ -3,7 +3,7 @@
 namespace AppBundle\Handler;
 
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,16 +20,16 @@ use Symfony\Component\Security\Http\HttpUtils;
 class LoginSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
      * AuthenticationSuccessHandler constructor.
      * @param HttpUtils $httpUtils
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    function __construct(HttpUtils $httpUtils, EntityManager $em)
+    function __construct(HttpUtils $httpUtils, EntityManagerInterface $em)
     {
         parent::__construct($httpUtils);
         $this->em = $em;
