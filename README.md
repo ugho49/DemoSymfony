@@ -15,6 +15,9 @@ A simple blog with post and categories and user.
 
 I'm not using FOSUserBundle for users.
 
+- JMSSerializerBundle
+- StofDoctrineExtensionsBundle
+
 ## Fixtures 
 
 ```
