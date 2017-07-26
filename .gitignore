@@ -19,3 +19,10 @@
 
 *.iml
 /.idea
+
+#ignores files provent to symfony 2.8
+/bin/doctrine*
+/bin/security-checker*
+/app/cache
+/app/logs
+/app/bootstrap.php.cache

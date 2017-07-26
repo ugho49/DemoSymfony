@@ -27,3 +27,4 @@ php app/console doctrine:fixtures:load
 ## TODO
 
 - [ ] Send Email for actions
+- [ ] Fix service Injection
