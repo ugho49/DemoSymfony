@@ -1,0 +1,4 @@
+ROLE_USER: User
+ROLE_EDITOR: Editor
+ROLE_ADMIN: Administrator
+ROLE_SUPERADMIN: Super administrator
