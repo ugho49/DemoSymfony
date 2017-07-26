@@ -27,7 +27,7 @@
                 <th>Roles</th>
                 <td>
                     {% for role in user.roles %}
-                        <span class="label label-default">{{ role }}</span>
+                        <span class="label label-default">{{ role|trans }}</span>
                     {% endfor %}
                 </td>
             </tr>

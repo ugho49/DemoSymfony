@@ -41,7 +41,7 @@
                 </td>
                 <td>
                     {% for role in user.roles %}
-                        <span class="label label-default">{{ role }}</span>
+                        <span class="label label-default">{{ role|trans }}</span>
                     {% endfor %}
                 </td>
                 <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i') }}{% endif %}</td>
