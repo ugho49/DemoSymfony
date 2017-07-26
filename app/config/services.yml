@@ -16,7 +16,7 @@ services:
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    AppBundle\:
+    AppBundle\Service\:
         resource: '../../src/AppBundle/Service/*'
 
     # controllers are imported separately to make sure they're public
@@ -25,11 +25,6 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
-
-    # add more services, or override services that need manual wiring
-    # AppBundle\Service\ExampleService:
-    #     arguments:
-    #         $someArgument: 'some_value'
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
@@ -42,6 +37,7 @@ services:
 
     security.login.success.handler:
         class: AppBundle\Handler\LoginSuccessHandler
+        arguments: ["@security.http_utils", "@doctrine.orm.entity_manager"]
 
     security.logout.handler:
         class: AppBundle\Handler\LogoutHandler
