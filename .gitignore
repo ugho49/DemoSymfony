@@ -12,3 +12,7 @@
 /.idea
 /web/uploads
 /composer.phar
+
+#ignores files provent to symfony 3.3
+/var
+/bin
