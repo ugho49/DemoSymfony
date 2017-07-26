@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserForgotPasswordType;
+use AppBundle\Service\StringGenerator;
 use DateInterval;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -73,7 +74,8 @@ class SecurityController extends Controller
 
         if ($form->isValid()) {
             $passwordEncoder = $this->get('security.password_encoder');
-            $newPasswordPlain = $this->get("string.generator")->generateRandomString(15);
+            $strGenerator = new StringGenerator();
+            $newPasswordPlain = $strGenerator->generateRandomString(15);
 
             $dateValidUntil = new DateTime();
             $dateValidUntil->add(new DateInterval('PT2H'));

@@ -7,6 +7,8 @@ use AdminBundle\Form\AdminUserType;
 use AdminBundle\Form\EditUserType;
 use AdminBundle\Form\NewUserType;
 use AppBundle\Entity\User;
+use AppBundle\Service\MailService;
+use AppBundle\Service\StringGenerator;
 use DateInterval;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -64,7 +66,8 @@ class AdminUserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $plainPassword = $this->get("string.generator")->generateRandomString(15);
+            $strGenerator = new StringGenerator();
+            $plainPassword = $strGenerator->generateRandomString(15);
             $passwordEncoder = $this->get('security.password_encoder');
             $user->setPassword($passwordEncoder->encodePassword($user, $plainPassword));
 
